@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Retrieve the names of the Google founders from the Wikipedia article -->
+<dataDescriptor>
+	<workflow>
+		<request>
+			<url>https://en.wikipedia.org/wiki/Main_Page</url>
+			<method>GET</method>
+		</request>
+		<fillForm formPath="//form[@id='searchform']" inputName="search" value="Google" />
+		<clickElement path="//form[@id='searchform']//input[@type='submit' and @name='go']" />
+		<saveAll path="//div[@id='mw-content-text']/table[@class='infobox vcard']/tbody/tr/th[contains(., 'Founders')]/following-sibling::td/div/ul/li/a" var="founders" />
+	</workflow>
+</dataDescriptor>
