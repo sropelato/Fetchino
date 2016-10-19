@@ -1,9 +1,8 @@
 package fetchino.workflow;
 
-import fetchino.action.ClickElement;
-import fetchino.action.FillForm;
-import fetchino.action.Request;
-import fetchino.action.SaveAll;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import fetchino.action.*;
 import lightdom.Document;
 import lightdom.Element;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,7 @@ public class DataDescriptor
 {
 	private final Context context = new Context();
 	private final List<Action> actions = new ArrayList<>();
+	private final WebClient webClient;
 
 	public DataDescriptor(InputStream dataDescriptorInputStream)
 	{
@@ -42,29 +42,21 @@ public class DataDescriptor
 
 		for(Element actionElement : workflowElement.getElements())
 		{
-			switch(actionElement.getName())
-			{
-				case "request":
-					actions.add(new Request(actionElement));
-					break;
-				case "fillForm":
-					actions.add(new FillForm(actionElement));
-					break;
-				case "clickElement":
-					actions.add(new ClickElement(actionElement));
-					break;
-				case "saveAll":
-					actions.add(new SaveAll(actionElement));
-					break;
-				default:
-					LoggerFactory.getLogger(DataDescriptor.class).warn("Not implemented: " + actionElement.getName());
-			}
+			actions.add(ActionParser.parse(actionElement));
 		}
+
+		// create web client
+		webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
 	}
 
 	public void fetch()
 	{
-		actions.forEach(action -> action.execute(context));
+		for(Action action : actions)
+		{
+			action.execute(webClient, context);
+		}
 	}
 
 	public Context getContext()

@@ -1,36 +1,33 @@
 package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 import lightdom.Element;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.List;
 
-public class ClickElement implements Action
+public class Save implements Action
 {
 	private final String path;
+	private final String var;
 
-	public ClickElement(String path)
+	public Save(String path, String var)
 	{
 		this.path = path;
+		this.var = var;
+
 		Util.validateXPathExpression(path);
+		Util.validateVariableName(var);
 	}
 
 	@Override
 	public void execute(WebClient webClient, Context context)
 	{
-		HtmlElement element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlElement.class);
-		try
-		{
-			element.click();
-		}
-		catch(IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		DomNode element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, DomNode.class);
+		context.setVariable(var, element.asText());
 	}
 }

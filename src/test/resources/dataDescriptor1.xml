@@ -4,7 +4,6 @@
 	<workflow>
 		<request>
 			<url>https://en.wikipedia.org/wiki/Main_Page</url>
-			<method>GET</method>
 		</request>
 		<fillForm formPath="//form[@id='searchform']" inputName="search" value="Google" />
 		<clickElement path="//form[@id='searchform']//input[@type='submit' and @name='go']" />

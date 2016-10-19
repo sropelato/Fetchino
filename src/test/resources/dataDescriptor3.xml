@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Open link and get title of new page -->
+<dataDescriptor>
+	<workflow>
+		<request>
+			<url>http://central.maven.org/maven2/commons-httpclient/commons-httpclient/</url>
+		</request>
+		<saveAll path="//pre/a[not(contains(.,'../') or contains(.,'.xml'))]/@href" var="versions" />
+	</workflow>
+</dataDescriptor>

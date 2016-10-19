@@ -1,5 +1,7 @@
 package fetchino.action;
 
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import fetchino.util.Util;
@@ -13,29 +15,19 @@ public class FillForm implements Action
 	private final String inputName;
 	private final String value;
 
-	public FillForm(Element fillFormElement)
+	public FillForm(String formPath, String inputName, String value)
 	{
-		if(!fillFormElement.hasAttributeWithName("formPath"))
-			throw new RuntimeException("FillForm has no formPath attribute");
-		else
-			formPath = fillFormElement.getAttribute("formPath");
+		this.formPath = formPath;
+		this.inputName = inputName;
+		this.value = value;
+
 		Util.validateXPathExpression(formPath);
-
-		if(!fillFormElement.hasAttributeWithName("inputName"))
-			throw new RuntimeException("FillForm has no inputName attribute");
-		else
-			inputName = fillFormElement.getAttribute("inputName");
-
-		if(!fillFormElement.hasAttributeWithName("value"))
-			throw new RuntimeException("FillForm has no value attribute");
-		else
-			value = fillFormElement.getAttribute("value");
 	}
 
 	@Override
-	public void execute(Context context)
+	public void execute(WebClient webClient, Context context)
 	{
-		HtmlForm form = Util.getSingleElementOfType(context.getCurrentPage(), formPath, HtmlForm.class);
+		HtmlForm form = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), formPath, HtmlForm.class);
 		HtmlInput input = form.getInputByName(inputName);
 		input.setValueAttribute(value);
 	}

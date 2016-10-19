@@ -1,47 +1,30 @@
 package fetchino.workflow;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebWindow;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import fetchino.util.XPathProcessor;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Context
 {
-	private WebClient webClient = null;
-	private HtmlPage currentPage = null;
+	private final XPathProcessor xPathProcessor;
 	private final Map<String, String> variables = new HashMap<>();
 	private final Map<String, List<String>> lists = new HashMap<>();
 	private final Map<String, Map<String, String>> maps = new HashMap<>();
 
 	public Context()
 	{
-		webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
-		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
+		xPathProcessor = new XPathProcessor();
 	}
 
-	public WebClient getWebClient()
+	public XPathProcessor getXPathProcessor()
 	{
-		return webClient;
-	}
-
-	public void setWebClient(WebClient webClient)
-	{
-		this.webClient = webClient;
-	}
-
-	public HtmlPage getCurrentPage()
-	{
-		return currentPage;
-	}
-
-	public void setCurrentPage(HtmlPage currentPage)
-	{
-		this.currentPage = currentPage;
+		return xPathProcessor;
 	}
 
 	public boolean hasVariable(String name)
@@ -89,7 +72,7 @@ public class Context
 	public void addToMap(String name, String key, String value)
 	{
 		if(!hasMap(name))
-			maps.put(name, new HashMap<>());
+			maps.put(name, new LinkedHashMap<>());
 		getMap(name).put(key, value);
 	}
 }

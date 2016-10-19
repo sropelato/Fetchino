@@ -1,5 +1,8 @@
 package fetchino.action;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomAttr;
+import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPlainText;
 import fetchino.util.Util;
@@ -14,25 +17,19 @@ public class SaveAll implements Action
 	private final String path;
 	private final String var;
 
-	public SaveAll(Element saveAllElement)
+	public SaveAll(String path, String var)
 	{
-		if(!saveAllElement.hasAttributeWithName("path"))
-			throw new RuntimeException("SaveAll has no path attribute");
-		else
-			path = saveAllElement.getAttribute("path");
-		Util.validateXPathExpression(path);
+		this.path = path;
+		this.var = var;
 
-		if(!saveAllElement.hasAttributeWithName("var"))
-			throw new RuntimeException("SaveAll has no var attribute");
-		else
-			var = saveAllElement.getAttribute("var");
+		Util.validateXPathExpression(path);
 		Util.validateVariableName(var);
 	}
 
 	@Override
-	public void execute(Context context)
+	public void execute(WebClient webClient, Context context)
 	{
-		List<HtmlElement> elements = Util.getElementsOfType(context.getCurrentPage(), path, HtmlElement.class);
-		elements.forEach(element -> context.addToList(var, element.asText()));
+		List<DomNode> elements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(webClient), path, DomNode.class);
+		elements.forEach(element -> context.addToList(var, (element instanceof DomAttr) ? element.getNodeValue() : element.asText()));
 	}
 }

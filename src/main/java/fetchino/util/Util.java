@@ -1,13 +1,19 @@
 package fetchino.util;
 
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Util
 {
@@ -46,51 +52,11 @@ public class Util
 
 	}
 
-	/**
-	 * Retrieves element from HtmlPage by XPath expression.
-	 * If exactly one object of the expected type is returned, this method returns the cast object.
-	 * An exception is thrown if no object is found, more than one object is found or the object found is not of a subtype of {@code T}.
-	 *
-	 * @param page       HtmlPage from which the element is retrieved
-	 * @param expression XPath expression
-	 * @param type       Class of expected type of returned object
-	 * @param <T>        Expected type of returned object
-	 * @return Retrieved object cast into type {@code T}
-	 */
-	public static <T> T getSingleElementOfType(HtmlPage page, String expression, Class<T> type)
+	public static HtmlPage getCurrentPage(WebClient webClient)
 	{
-		List<?> elements = page.getByXPath(expression);
-		if(elements.size() == 0)
-			throw new RuntimeException("No element has been found for expression: " + expression);
-		else if(elements.size() > 1)
-			throw new RuntimeException("Expecting exatly one element but " + elements.size() + " have been found for expression: " + expression);
-		else if(!(type.isInstance(elements.get(0))))
-			throw new RuntimeException("Element is not of type " + type.getName() + " found for expression: " + expression);
-		else
-			return (T)elements.get(0);
-	}
-
-	/**
-	 * Retrieves elements from HtmlPage by XPath expression.
-	 * If all objects are of a type compatible with {@code T}, this method returns a {@code List<T>}.
-	 * An exception is thrown if at least one of the retrieved objects is not of a subtype of {@code T}.
-	 *
-	 * @param page       HtmlPage from which the elements are retrieved
-	 * @param expression XPath expression
-	 * @param type       Class of expected type of returned object
-	 * @param <T>        Expected type of returned object
-	 * @return List of objects cast into type {@code T}
-	 */
-	public static <T> List<T> getElementsOfType(HtmlPage page, String expression, Class<T> type)
-	{
-		List<T> result = new ArrayList<T>();
-		List<?> elements = page.getByXPath(expression);
-		elements.forEach(element ->
-		{
-			if(!(type.isInstance(element)))
-				throw new RuntimeException("Elements are not of type " + type.getName() + " found for expression: " + expression);
-			result.add((T)element);
-		});
-		return result;
+		Page page = webClient.getCurrentWindow().getEnclosedPage();
+		if(!page.isHtmlPage())
+			throw new RuntimeException("Not an HtmlPage");
+		return (HtmlPage)page;
 	}
 }
