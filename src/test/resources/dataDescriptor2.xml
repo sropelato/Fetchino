@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Get all compositions of Johann Sebastian Bach -->
+<!--
+  retrieve title and date of all compositions by Johann Sebastian Bach
+  and store them in maps using the BWV index as key
+-->
 <dataDescriptor>
 	<workflow>
-		<request>
-			<url>https://en.wikipedia.org/wiki/List_of_compositions_by_Johann_Sebastian_Bach</url>
-		</request>
-		<saveAll path="//div[@id='mw-content-text']/table[@class='infobox vcard']/tbody/tr/th[contains(., 'Founders')]/following-sibling::td/div/ul/li/a" var="founders" />
+		<request url="https://en.wikipedia.org/wiki/List_of_compositions_by_Johann_Sebastian_Bach" />
 		<saveMap var="compositionNames">
-			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]"/>
-			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[4]"/>
+			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]" />
+			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[4]" />
 		</saveMap>
 		<saveMap var="compositionDates">
-			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]"/>
-			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[3]"/>
+			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]" />
+			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[3]" />
 		</saveMap>
 	</workflow>
 </dataDescriptor>

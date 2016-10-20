@@ -2,13 +2,9 @@ package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNode;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
-import lightdom.Element;
-
-import java.util.List;
 
 public class Save implements Action
 {

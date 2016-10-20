@@ -6,18 +6,21 @@ import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
+import fetchino.workflow.TempContext;
 
 import java.util.List;
 
-public class SaveAll implements Action
+public class ForEachPath extends ForEach
 {
 	private final String path;
 	private final String var;
+	private final List<Action> actions;
 
-	public SaveAll(String path, String var)
+	public ForEachPath(String path, String var, List<Action> actions)
 	{
 		this.path = path;
 		this.var = var;
+		this.actions = actions;
 
 		Util.validateXPathExpression(path);
 		Util.validateVariableName(var);
@@ -27,6 +30,16 @@ public class SaveAll implements Action
 	public void execute(WebClient webClient, Context context)
 	{
 		List<DomNode> elements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(webClient), path, DomNode.class);
-		elements.forEach(element -> context.addToList(var, (element instanceof DomAttr) ? element.getNodeValue() : element.asText()));
+		for(DomNode element : elements)
+		{
+			String elementValue = (element instanceof DomAttr) ? element.getNodeValue() : element.asText();
+			TempContext tempContext = new TempContext(context);
+			tempContext.setTempVariable(var, elementValue);
+
+			for(Action action : actions)
+			{
+				action.execute(webClient, tempContext);
+			}
+		}
 	}
 }

@@ -6,7 +6,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
-import lightdom.Element;
 
 import java.io.IOException;
 
@@ -31,7 +30,6 @@ public class OpenLink implements Action
 		try
 		{
 			element.click();
-			//((HtmlAnchor)element).openLinkInNewWindow();
 		}
 		catch(IOException e)
 		{

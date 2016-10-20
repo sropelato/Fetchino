@@ -16,7 +16,8 @@ public class DataDescriptorTest
 		Util.setupLogging();
 	}
 
-	// Retrieve the names of the Google founders from the Wikipedia article
+	// open Wikipedia main page and search for Google article
+	// retrieve the names of the founders and store them in a list
 	@Test
 	public void test1() throws Exception
 	{
@@ -26,15 +27,13 @@ public class DataDescriptorTest
 		assertTrue(dataDescriptor.getContext().getList("founders").containsAll(Arrays.asList("Larry Page", "Sergey Brin")));
 	}
 
-	// Retrieve title and date of all compositions from Johann Sebastian Bach
+	// retrieve title and date of all compositions by Johann Sebastian Bach
 	// and store them in maps using the BWV index as key
 	@Test
 	public void test2() throws Exception
 	{
 		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor2.xml"));
 		dataDescriptor.fetch();
-
-		//dataDescriptor.getContext().getMap("compositionNames").forEach((key, value) -> LoggerFactory.getLogger(DataDescriptorTest.class).info(key + ": " + value));
 
 		assertEquals(dataDescriptor.getContext().getMap("compositionNames").get("565"), "Toccata and Fugue");
 		assertEquals(dataDescriptor.getContext().getMap("compositionNames").get("933"), "Six Little Preludes No. 1");
@@ -45,12 +44,31 @@ public class DataDescriptorTest
 		assertEquals(dataDescriptor.getContext().getMap("compositionDates").get("214"), "1733-12-08");
 	}
 
+	// forEach loop
+	// get list of all versions of commons-httpclient in the Maven Central Repository
+	// for each version, get the list of all JAR files and store them in a list
 	@Test
-	public void test3() throws Exception
+	public void test3a() throws Exception
 	{
-		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor3.xml"));
+		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor3a.xml"));
 		dataDescriptor.fetch();
 
-		assertTrue(dataDescriptor.getContext().getList("versions").contains("3.1/"));
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-1.0.jar"));
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-2.0.jar"));
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-3.0.jar"));
+	}
+
+	// forEach loop over list
+	// get list of all versions of commons-httpclient in the Maven Central Repository
+	// for each version, get the list of all JAR files and store them in a list
+	@Test
+	public void test3b() throws Exception
+	{
+		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor3b.xml"));
+		dataDescriptor.fetch();
+
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-1.0.jar"));
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-2.0.jar"));
+		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-3.0.jar"));
 	}
 }

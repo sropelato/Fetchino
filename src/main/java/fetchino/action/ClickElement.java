@@ -5,8 +5,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
-import lightdom.Element;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 

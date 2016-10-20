@@ -2,15 +2,9 @@ package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
-import com.gargoylesoftware.htmlunit.util.UrlUtils;
-import fetchino.util.Util;
 import fetchino.workflow.Action;
-import fetchino.workflow.DataDescriptor;
 import lightdom.Element;
-import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,39 +28,29 @@ public class ActionParser
 				return parseSaveMap(actionElement);
 			case "openLink":
 				return parseOpenLink(actionElement);
+			case "forEach":
+				return parseForEach(actionElement);
 			default:
-				LoggerFactory.getLogger(DataDescriptor.class).warn("Not implemented: " + actionElement.getName());
-				return null;
+				throw new RuntimeException("Unknown element: " + actionElement.getName());
 		}
 	}
 
 	private static Request parseRequest(Element requestElement)
 	{
-		URL url;
+		String url;
 		HttpMethod method;
 		List<NameValuePair> params = new ArrayList<>();
 
-		if(requestElement.getElementByName("url") == null)
-			throw new RuntimeException("Request has no url element");
+		if(!requestElement.hasAttributeWithName("url"))
+			throw new RuntimeException("Request has no url attribute");
 
 		// url
-		try
-		{
-			url = UrlUtils.toUrlUnsafe(requestElement.getElementByName("url").getText());
-		}
-		catch(MalformedURLException e)
-		{
-			throw new RuntimeException(e);
-		}
+		url = requestElement.getAttribute("url");
 
 		// method
-		if(requestElement.getElementByName("method") == null)
+		if(requestElement.hasAttributeWithName("method"))
 		{
-			method = HttpMethod.GET;
-		}
-		else
-		{
-			String methodString = requestElement.getElementByName("method").getText();
+			String methodString = requestElement.getAttribute("method");
 			switch(methodString)
 			{
 				case "GET":
@@ -79,11 +63,15 @@ public class ActionParser
 					throw new RuntimeException("Unknown method: " + methodString);
 			}
 		}
+		else
+		{
+			method = HttpMethod.GET;
+		}
 
 		// params
-		if(requestElement.getElementByName("params") != null)
+		if(requestElement.hasElementWithName("param"))
 		{
-			for(Element paramElement : requestElement.getElementByName("params").getElementsByName("param"))
+			for(Element paramElement : requestElement.getElementsByName("param"))
 			{
 				if(!paramElement.hasAttributeWithName("key"))
 					throw new RuntimeException("Param has no key attribute");
@@ -208,5 +196,35 @@ public class ActionParser
 			path = openLinkElement.getAttribute("path");
 
 		return new OpenLink(path);
+	}
+
+	private static ForEach parseForEach(Element forEachElement)
+	{
+		String path = null;
+		String listName = null;
+		String var;
+		List<Action> nestedActions = new ArrayList<>();
+
+		if(!forEachElement.hasAttributeWithName("path") && !forEachElement.hasAttributeWithName("list"))
+			throw new RuntimeException("ForEach must have either a path or a list attribute");
+		else if(forEachElement.hasAttributeWithName("path") && forEachElement.hasAttributeWithName("list"))
+			throw new RuntimeException("ForEach cannot have a path and a list attribute");
+
+		if(forEachElement.hasAttributeWithName("path"))
+			path = forEachElement.getAttribute("path");
+		else
+			listName = forEachElement.getAttribute("list");
+
+		if(!forEachElement.hasAttributeWithName("var"))
+			throw new RuntimeException("ForEach has no var attribute");
+		else
+			var = forEachElement.getAttribute("var");
+
+		forEachElement.getElements().forEach(actionElement -> nestedActions.add(parse(actionElement)));
+
+		if(path != null)
+			return new ForEachPath(path, var, nestedActions);
+		else
+			return new ForEachList(listName, var, nestedActions);
 	}
 }

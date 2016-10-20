@@ -1,13 +1,11 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import fetchino.util.Util;
 import fetchino.workflow.Action;
 import fetchino.workflow.Context;
-import lightdom.Element;
 
 public class FillForm implements Action
 {
@@ -29,6 +27,6 @@ public class FillForm implements Action
 	{
 		HtmlForm form = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), formPath, HtmlForm.class);
 		HtmlInput input = form.getInputByName(inputName);
-		input.setValueAttribute(value);
+		input.setValueAttribute(Util.replacePlaceholders(value, context));
 	}
 }

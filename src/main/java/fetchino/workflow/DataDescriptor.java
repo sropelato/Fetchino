@@ -5,7 +5,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import fetchino.action.*;
 import lightdom.Document;
 import lightdom.Element;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class DataDescriptor
 {
-	private final Context context = new Context();
+	private final RootContext context = new RootContext();
 	private final List<Action> actions = new ArrayList<>();
 	private final WebClient webClient;
 
@@ -59,7 +58,7 @@ public class DataDescriptor
 		}
 	}
 
-	public Context getContext()
+	public RootContext getContext()
 	{
 		return context;
 	}
