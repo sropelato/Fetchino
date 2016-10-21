@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  if-then-else
+  check if result from XPath query matches regex pattern and set variable accordingly
+-->
+<dataDescriptor>
+	<workflow>
+		<request url="https://en.wikipedia.org/wiki/Queen_(band)" />
+		<if>
+			<condition>
+				<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+			</condition>
+			<then>
+				<setVar var="foundFreddie" value="true" />
+			</then>
+			<else>
+				<setVar var="foundFreddie" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+			</condition>
+			<then>
+				<setVar var="foundMickey" value="true" />
+			</then>
+			<else>
+				<setVar var="foundMickey" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<not>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+				</not>
+			</condition>
+			<then>
+				<setVar var="notFoundMickey" value="true" />
+			</then>
+		</if>
+		<if>
+			<condition>
+				<and>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Brian May).*" />
+				</and>
+			</condition>
+			<then>
+				<setVar var="foundFreddieAndBrian" value="true" />
+			</then>
+		</if>
+		<if>
+			<condition>
+				<and>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+				</and>
+			</condition>
+			<then>
+				<setVar var="foundFreddieAndMickey" value="true" />
+			</then>
+			<else>
+				<setVar var="foundFreddieAndMickey" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<or>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+				</or>
+			</condition>
+			<then>
+				<setVar var="foundFreddieOrMickey" value="true" />
+			</then>
+		</if>
+		<if>
+			<condition>
+				<or>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+				</or>
+			</condition>
+			<then>
+				<setVar var="foundMickeyOrMary" value="true" />
+			</then>
+			<else>
+				<setVar var="foundMickeyOrMary" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<or>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+				</or>
+			</condition>
+			<then>
+				<setVar var="foundFreddieOrMickeyOrMary" value="true" />
+			</then>
+			<else>
+				<setVar var="foundFreddieOrMickeyOrMary" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<xor>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+				</xor>
+			</condition>
+			<then>
+				<setVar var="foundFreddieXorMickeyXorMary" value="true" />
+			</then>
+			<else>
+				<setVar var="foundFreddieXorMickeyXorMary" value="false" />
+			</else>
+		</if>
+		<if>
+			<condition>
+				<xor>
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Brian May).*" />
+					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+				</xor>
+			</condition>
+			<then>
+				<setVar var="foundFreddieXorBrianXorMary" value="true" />
+			</then>
+			<else>
+				<setVar var="foundFreddieXorBrianXorMary" value="false" />
+			</else>
+		</if>
+	</workflow>
+</dataDescriptor>

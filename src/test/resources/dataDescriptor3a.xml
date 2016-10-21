@@ -9,7 +9,7 @@
 		<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/" />
 		<forEach path="//pre/a[not(contains(.,'../') or contains(.,'.xml'))]/@href" var="version">
 			<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/${version}" />
-			<saveAll path="//pre/a[contains(.,'.jar')]" var="jarFiles" />
+			<addToList path="//pre/a[contains(.,'.jar')]" list="jarFiles" />
 		</forEach>
 	</workflow>
 </dataDescriptor>

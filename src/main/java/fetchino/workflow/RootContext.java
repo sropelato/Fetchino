@@ -1,11 +1,14 @@
 package fetchino.workflow;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import fetchino.util.Util;
 import fetchino.util.XPathProcessor;
 
 import java.util.*;
 
 public class RootContext implements Context
 {
+	private final WebClient webClient;
 	private final XPathProcessor xPathProcessor;
 	private final Map<String, String> variables = new HashMap<>();
 	private final Map<String, List<String>> lists = new HashMap<>();
@@ -13,60 +16,80 @@ public class RootContext implements Context
 
 	public RootContext()
 	{
+		// create web client
+		webClient = Util.createWebClient();
+
+		// create XPath processor
 		xPathProcessor = new XPathProcessor();
 	}
 
+	@Override
+	public WebClient getWebClient()
+	{
+		return webClient;
+	}
+
+	@Override
 	public XPathProcessor getXPathProcessor()
 	{
 		return xPathProcessor;
 	}
 
-	public boolean hasVariable(String name)
+	@Override
+	public boolean hasVariable(String variableName)
 	{
-		return variables.containsKey(name);
+		return variables.containsKey(variableName);
 	}
 
-	public String getVariable(String name)
+	@Override
+	public String getVariable(String variableName)
 	{
-		return variables.get(name);
+		return variables.get(variableName);
 	}
 
-	public void setVariable(String name, String value)
+	@Override
+	public void setVariable(String variableName, String value)
 	{
-		variables.put(name, value);
+		variables.put(variableName, value);
 	}
 
-	public boolean hasList(String name)
+	@Override
+	public boolean hasList(String listName)
 	{
-		return lists.containsKey(name);
+		return lists.containsKey(listName);
 	}
 
-	public List<String> getList(String name)
+	@Override
+	public List<String> getList(String listName)
 	{
-		return lists.get(name);
+		return lists.get(listName);
 	}
 
-	public void addToList(String name, String value)
+	@Override
+	public void addToList(String listName, String value)
 	{
-		if(!hasList(name))
-			lists.put(name, new ArrayList<>());
-		getList(name).add(value);
+		if(!hasList(listName))
+			lists.put(listName, new ArrayList<>());
+		getList(listName).add(value);
 	}
 
-	public boolean hasMap(String name)
+	@Override
+	public boolean hasMap(String mapName)
 	{
-		return maps.containsKey(name);
+		return maps.containsKey(mapName);
 	}
 
-	public Map<String, String> getMap(String name)
+	@Override
+	public Map<String, String> getMap(String mapName)
 	{
-		return maps.get(name);
+		return maps.get(mapName);
 	}
 
-	public void addToMap(String name, String key, String value)
+	@Override
+	public void addToMap(String mapName, String key, String value)
 	{
-		if(!hasMap(name))
-			maps.put(name, new LinkedHashMap<>());
-		getMap(name).put(key, value);
+		if(!hasMap(mapName))
+			maps.put(mapName, new LinkedHashMap<>());
+		getMap(mapName).put(key, value);
 	}
 }

@@ -2,7 +2,8 @@ package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
-import fetchino.workflow.Action;
+import fetchino.condition.Condition;
+import fetchino.condition.ConditionParser;
 import lightdom.Element;
 
 import java.util.ArrayList;
@@ -20,18 +21,20 @@ public class ActionParser
 				return parseFillForm(actionElement);
 			case "clickElement":
 				return parseClickElement(actionElement);
-			case "save":
-				return parseSave(actionElement);
-			case "saveAll":
-				return parseSaveAll(actionElement);
-			case "saveMap":
-				return parseSaveMap(actionElement);
+			case "setVar":
+				return parseSetVar(actionElement);
+			case "addToList":
+				return parseAddToList(actionElement);
+			case "addToMap":
+				return parseAddToMap(actionElement);
 			case "openLink":
 				return parseOpenLink(actionElement);
 			case "forEach":
 				return parseForEach(actionElement);
+			case "if":
+				return parseIf(actionElement);
 			default:
-				throw new RuntimeException("Unknown element: " + actionElement.getName());
+				throw new RuntimeException("Unknown action: " + actionElement.getName());
 		}
 	}
 
@@ -41,10 +44,9 @@ public class ActionParser
 		HttpMethod method;
 		List<NameValuePair> params = new ArrayList<>();
 
-		if(!requestElement.hasAttributeWithName("url"))
-			throw new RuntimeException("Request has no url attribute");
-
 		// url
+		if(!requestElement.hasAttributeWithName("url"))
+			throw new RuntimeException("request has no url attribute");
 		url = requestElement.getAttribute("url");
 
 		// method
@@ -74,10 +76,10 @@ public class ActionParser
 			for(Element paramElement : requestElement.getElementsByName("param"))
 			{
 				if(!paramElement.hasAttributeWithName("key"))
-					throw new RuntimeException("Param has no key attribute");
+					throw new RuntimeException("param has no key attribute");
 
 				if(!paramElement.hasAttributeWithName("value"))
-					throw new RuntimeException("Param has no value attribute");
+					throw new RuntimeException("param has no value attribute");
 
 				params.add(new NameValuePair(paramElement.getAttribute("key"), paramElement.getAttribute("value")));
 			}
@@ -92,12 +94,12 @@ public class ActionParser
 		String value;
 
 		if(!fillFormElement.hasAttributeWithName("path"))
-			throw new RuntimeException("FillForm has no path attribute");
+			throw new RuntimeException("fillForm has no path attribute");
 		else
 			path = fillFormElement.getAttribute("path");
 
 		if(!fillFormElement.hasAttributeWithName("value"))
-			throw new RuntimeException("FillForm has no value attribute");
+			throw new RuntimeException("fillForm has no value attribute");
 		else
 			value = fillFormElement.getAttribute("value");
 
@@ -109,75 +111,84 @@ public class ActionParser
 		String path;
 
 		if(!clickElementElement.hasAttributeWithName("path"))
-			throw new RuntimeException("ClickElement has no path attribute");
+			throw new RuntimeException("clickElement has no path attribute");
 		else
 			path = clickElementElement.getAttribute("path");
 
 		return new ClickElement(path);
 	}
 
-	private static Save parseSave(Element saveElement)
+	private static SetVariable parseSetVar(Element setVarElement)
 	{
-		String path;
-		String var;
+		String variableName;
+		String path = null;
+		String value = null;
 
-		if(!saveElement.hasAttributeWithName("path"))
-			throw new RuntimeException("Save has no path attribute");
+		if(!setVarElement.hasAttributeWithName("var"))
+			throw new RuntimeException("setVar has no var attribute");
 		else
-			path = saveElement.getAttribute("path");
+			variableName = setVarElement.getAttribute("var");
 
-		if(!saveElement.hasAttributeWithName("var"))
-			throw new RuntimeException("Save has no var attribute");
+		if(!setVarElement.hasAttributeWithName("path") && !setVarElement.hasAttributeWithName("value"))
+			throw new RuntimeException("setVar must have either a path or a value attribute");
+		else if(setVarElement.hasAttributeWithName("path") && setVarElement.hasAttributeWithName("value"))
+			throw new RuntimeException("setVar cannot have a path and a value attribute");
+
+		if(setVarElement.hasAttributeWithName("path"))
+			path = setVarElement.getAttribute("path");
 		else
-			var = saveElement.getAttribute("var");
+			value = setVarElement.getAttribute("value");
 
-		return new Save(path, var);
+		if(path != null)
+			return new SetVariablePath(variableName, path);
+		else
+			return new SetVariableValue(variableName, value);
 	}
 
-	private static SaveAll parseSaveAll(Element saveAll)
+	private static AddToList parseAddToList(Element addToListElement)
 	{
+		String listName;
 		String path;
-		String var;
 
-		if(!saveAll.hasAttributeWithName("path"))
-			throw new RuntimeException("SaveAll has no path attribute");
+		if(!addToListElement.hasAttributeWithName("list"))
+			throw new RuntimeException("addToList has no list attribute");
 		else
-			path = saveAll.getAttribute("path");
+			listName = addToListElement.getAttribute("list");
 
-		if(!saveAll.hasAttributeWithName("var"))
-			throw new RuntimeException("SaveAll has no var attribute");
+		if(!addToListElement.hasAttributeWithName("path"))
+			throw new RuntimeException("addToList has no path attribute");
 		else
-			var = saveAll.getAttribute("var");
+			path = addToListElement.getAttribute("path");
 
-		return new SaveAll(path, var);
+		return new AddToList(listName, path);
 	}
 
-	private static SaveMap parseSaveMap(Element saveMapElement)
+	private static AddToMap parseAddToMap(Element addToMapElement)
 	{
-		String var;
+		String mapName;
 		String keyPath;
 		String valuePath;
 
-		if(!saveMapElement.hasAttributeWithName("var"))
-			throw new RuntimeException("SaveMap has no var attribute");
+		if(!addToMapElement.hasAttributeWithName("map"))
+			throw new RuntimeException("addToMap has no map attribute");
 		else
-			var = saveMapElement.getAttribute("var");
+			mapName = addToMapElement.getAttribute("map");
 
-		if(!saveMapElement.hasElementWithName("key"))
-			throw new RuntimeException("SaveMap has no key element");
-		else if(!saveMapElement.getElementByName("key").hasAttributeWithName("path"))
-			throw new RuntimeException("Key has no path attribute");
+		if(!addToMapElement.hasElementWithName("key"))
+			throw new RuntimeException("addToMap has no key element");
+		else if(!addToMapElement.getElementByName("key").hasAttributeWithName("path"))
+			throw new RuntimeException("key has no path attribute");
 		else
-			keyPath = saveMapElement.getElementByName("key").getAttribute("path");
+			keyPath = addToMapElement.getElementByName("key").getAttribute("path");
 
-		if(!saveMapElement.hasElementWithName("value"))
-			throw new RuntimeException("SaveMap has no value element");
-		else if(!saveMapElement.getElementByName("value").hasAttributeWithName("path"))
-			throw new RuntimeException("Value has no path attribute");
+		if(!addToMapElement.hasElementWithName("value"))
+			throw new RuntimeException("addToMap has no value element");
+		else if(!addToMapElement.getElementByName("value").hasAttributeWithName("path"))
+			throw new RuntimeException("value has no path attribute");
 		else
-			valuePath = saveMapElement.getElementByName("value").getAttribute("path");
+			valuePath = addToMapElement.getElementByName("value").getAttribute("path");
 
-		return new SaveMap(var, keyPath, valuePath);
+		return new AddToMap(mapName, keyPath, valuePath);
 	}
 
 	private static OpenLink parseOpenLink(Element openLinkElement)
@@ -185,7 +196,7 @@ public class ActionParser
 		String path;
 
 		if(!openLinkElement.hasAttributeWithName("path"))
-			throw new RuntimeException("OpenLink has no path attribute");
+			throw new RuntimeException("openLink has no path attribute");
 		else
 			path = openLinkElement.getAttribute("path");
 
@@ -200,9 +211,9 @@ public class ActionParser
 		List<Action> nestedActions = new ArrayList<>();
 
 		if(!forEachElement.hasAttributeWithName("path") && !forEachElement.hasAttributeWithName("list"))
-			throw new RuntimeException("ForEach must have either a path or a list attribute");
+			throw new RuntimeException("forEach must have either a path or a list attribute");
 		else if(forEachElement.hasAttributeWithName("path") && forEachElement.hasAttributeWithName("list"))
-			throw new RuntimeException("ForEach cannot have a path and a list attribute");
+			throw new RuntimeException("forEach cannot have a path and a list attribute");
 
 		if(forEachElement.hasAttributeWithName("path"))
 			path = forEachElement.getAttribute("path");
@@ -210,7 +221,7 @@ public class ActionParser
 			listName = forEachElement.getAttribute("list");
 
 		if(!forEachElement.hasAttributeWithName("var"))
-			throw new RuntimeException("ForEach has no var attribute");
+			throw new RuntimeException("forEach has no var attribute");
 		else
 			var = forEachElement.getAttribute("var");
 
@@ -220,5 +231,34 @@ public class ActionParser
 			return new ForEachPath(path, var, nestedActions);
 		else
 			return new ForEachList(listName, var, nestedActions);
+	}
+
+	private static If parseIf(Element ifElement)
+	{
+		Condition condition;
+		List<Action> thenActions = new ArrayList<>();
+		List<Action> elseActions = new ArrayList<>();
+
+		if(ifElement.hasElementWithName("condition"))
+		{
+			if(ifElement.getElementByName("condition").getElements().size() == 0)
+				throw new RuntimeException("condition cannot be empty");
+			else if(ifElement.getElementByName("condition").getElements().size() > 1)
+				throw new RuntimeException("only one condition is allowed");
+			else
+				condition = ConditionParser.parse(ifElement.getElementByName("condition").getElements().get(0));
+		}
+		else
+			throw new RuntimeException("if has no condition element");
+
+		if(ifElement.hasElementWithName("then"))
+			ifElement.getElementByName("then").getElements().forEach(actionElement -> thenActions.add(parse(actionElement)));
+		else
+			throw new RuntimeException("if has no then element");
+
+		if(ifElement.hasElementWithName("else"))
+			ifElement.getElementByName("else").getElements().forEach(actionElement -> elseActions.add(parse(actionElement)));
+
+		return new If(condition, thenActions, elseActions);
 	}
 }

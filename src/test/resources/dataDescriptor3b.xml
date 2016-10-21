@@ -7,10 +7,10 @@
 <dataDescriptor>
 	<workflow>
 		<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/" />
-		<saveAll path="//pre/a[not(contains(.,'../') or contains(.,'.xml'))]/@href" var="versions" />
+		<addToList path="//pre/a[not(contains(.,'../') or contains(.,'.xml'))]/@href" list="versions" />
 		<forEach list="versions" var="version">
 			<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/${version}" />
-			<saveAll path="//pre/a[contains(.,'.jar')]" var="jarFiles" />
+			<addToList path="//pre/a[contains(.,'.jar')]" list="jarFiles" />
 		</forEach>
 	</workflow>
 </dataDescriptor>

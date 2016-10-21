@@ -51,11 +51,11 @@ public class XPathProcessor
 
 		List<?> elements = node.getByXPath(expression);
 		if(elements.size() == 0)
-			throw new RuntimeException("No element has been found for expression: " + expression);
+			throw new RuntimeException("No element has been found for expression " + expression);
 		else if(elements.size() > 1)
-			throw new RuntimeException("Expecting exatly one element but " + elements.size() + " have been found for expression: " + expression);
+			throw new RuntimeException("Expecting exatly one element but " + elements.size() + " have been found for expression " + expression);
 		else if(!(type.isInstance(elements.get(0))))
-			throw new RuntimeException("Element for expression '" + expression + "' is not of type " + type.getName());
+			throw new RuntimeException("Element for expression " + expression + " is not of type " + type.getName());
 
 		if(useCache)
 		{
@@ -113,7 +113,7 @@ public class XPathProcessor
 		elements.forEach(element ->
 		{
 			if(!(type.isInstance(element)))
-				throw new RuntimeException("Elements for expression '" + expression + "' are not of type " + type.getName());
+				throw new RuntimeException("Elements for expression " + expression + " are not of type " + type.getName());
 			result.add((T)element);
 		});
 

@@ -6,13 +6,13 @@
 <dataDescriptor>
 	<workflow>
 		<request url="https://en.wikipedia.org/wiki/List_of_compositions_by_Johann_Sebastian_Bach" />
-		<saveMap var="compositionNames">
+		<addToMap map="compositionNames">
 			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]" />
 			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[4]" />
-		</saveMap>
-		<saveMap var="compositionDates">
+		</addToMap>
+		<addToMap map="compositionDates">
 			<key path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[1]" />
 			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[3]" />
-		</saveMap>
+		</addToMap>
 	</workflow>
 </dataDescriptor>

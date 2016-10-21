@@ -1,8 +1,7 @@
 package fetchino.workflow;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import fetchino.action.*;
+import fetchino.action.Action;
+import fetchino.action.ActionParser;
 import lightdom.Document;
 import lightdom.Element;
 
@@ -15,7 +14,6 @@ public class DataDescriptor
 {
 	private final RootContext context = new RootContext();
 	private final List<Action> actions = new ArrayList<>();
-	private final WebClient webClient;
 
 	public DataDescriptor(InputStream dataDescriptorInputStream)
 	{
@@ -43,18 +41,13 @@ public class DataDescriptor
 		{
 			actions.add(ActionParser.parse(actionElement));
 		}
-
-		// create web client
-		webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
-		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
-		webClient.getOptions().setThrowExceptionOnScriptError(false);
 	}
 
 	public void fetch()
 	{
 		for(Action action : actions)
 		{
-			action.execute(webClient, context);
+			action.execute(context);
 		}
 	}
 

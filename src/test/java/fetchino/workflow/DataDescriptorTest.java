@@ -35,13 +35,13 @@ public class DataDescriptorTest
 		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor2.xml"));
 		dataDescriptor.fetch();
 
-		assertEquals(dataDescriptor.getContext().getMap("compositionNames").get("565"), "Toccata and Fugue");
-		assertEquals(dataDescriptor.getContext().getMap("compositionNames").get("933"), "Six Little Preludes No. 1");
-		assertEquals(dataDescriptor.getContext().getMap("compositionNames").get("1007"), "Suite for cello No. 1");
+		assertEquals("Toccata and Fugue", dataDescriptor.getContext().getMap("compositionNames").get("565"));
+		assertEquals("Six Little Preludes No. 1", dataDescriptor.getContext().getMap("compositionNames").get("933"));
+		assertEquals("Suite for cello No. 1", dataDescriptor.getContext().getMap("compositionNames").get("1007"));
 
-		assertEquals(dataDescriptor.getContext().getMap("compositionDates").get("1"), "1725-03-25");
-		assertEquals(dataDescriptor.getContext().getMap("compositionDates").get("151"), "1725-12-27");
-		assertEquals(dataDescriptor.getContext().getMap("compositionDates").get("214"), "1733-12-08");
+		assertEquals("1725-03-25", dataDescriptor.getContext().getMap("compositionDates").get("1"));
+		assertEquals("1725-12-27", dataDescriptor.getContext().getMap("compositionDates").get("151"));
+		assertEquals("1733-12-08", dataDescriptor.getContext().getMap("compositionDates").get("214"));
 	}
 
 	// forEach loop
@@ -70,5 +70,45 @@ public class DataDescriptorTest
 		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-1.0.jar"));
 		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-2.0.jar"));
 		assertTrue(dataDescriptor.getContext().getList("jarFiles").contains("commons-httpclient-3.0.jar"));
+	}
+
+	// if-then-else
+	// check if result from XPath query matches regex pattern and set variable accordingly
+	@Test
+	public void test4a() throws Exception
+	{
+		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor4a.xml"));
+		dataDescriptor.fetch();
+
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddie"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("notFoundMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieAndBrian"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundFreddieAndMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieOrMickey"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundMickeyOrMary"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieOrMickeyOrMary"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieXorMickeyXorMary"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundFreddieXorBrianXorMary"));
+	}
+
+	// if-then-else
+	// check if variable matches regex pattern and set variable accordingly
+	@Test
+	public void test4b() throws Exception
+	{
+		DataDescriptor dataDescriptor = new DataDescriptor(this.getClass().getClassLoader().getResourceAsStream("dataDescriptor4b.xml"));
+		dataDescriptor.fetch();
+
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddie"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("notFoundMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieAndBrian"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundFreddieAndMickey"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieOrMickey"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundMickeyOrMary"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieOrMickeyOrMary"));
+		assertEquals("true", dataDescriptor.getContext().getVariable("foundFreddieXorMickeyXorMary"));
+		assertEquals("false", dataDescriptor.getContext().getVariable("foundFreddieXorBrianXorMary"));
 	}
 }

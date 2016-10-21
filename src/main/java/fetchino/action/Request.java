@@ -1,12 +1,10 @@
 package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.HttpMethod;
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.util.UrlUtils;
 import fetchino.util.Util;
-import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 
 import java.io.IOException;
@@ -34,15 +32,17 @@ public class Request implements Action
 	}
 
 	@Override
-	public void execute(WebClient webClient, Context context)
+	public void execute(Context context)
 	{
 		try
 		{
 			URL url = UrlUtils.toUrlUnsafe(Util.replacePlaceholders(urlString, context));
 
 			WebRequest webRequest = new WebRequest(url, method);
-			webRequest.setRequestParameters(params);
-			webClient.getPage(url);
+			List<NameValuePair> replacedParams = new ArrayList<>();
+			params.forEach(param -> replacedParams.add(new NameValuePair(param.getName(), param.getValue())));
+			webRequest.setRequestParameters(replacedParams);
+			context.getWebClient().getPage(url);
 		}
 		catch(MalformedURLException e)
 		{

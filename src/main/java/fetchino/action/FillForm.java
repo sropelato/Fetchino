@@ -1,10 +1,7 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import fetchino.util.Util;
-import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 
 public class FillForm implements Action
@@ -21,9 +18,9 @@ public class FillForm implements Action
 	}
 
 	@Override
-	public void execute(WebClient webClient, Context context)
+	public void execute(Context context)
 	{
-		HtmlInput input = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlInput.class);
-		input.setValueAttribute(Util.replacePlaceholders(value, context));
+		HtmlInput input = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlInput.class);
+		input.setValueAttribute(Util.replacePlaceholders(Util.replacePlaceholders(value, context), context));
 	}
 }

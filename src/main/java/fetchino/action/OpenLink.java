@@ -1,10 +1,7 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
-import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 
 import java.io.IOException;
@@ -20,9 +17,9 @@ public class OpenLink implements Action
 	}
 
 	@Override
-	public void execute(WebClient webClient, Context context)
+	public void execute(Context context)
 	{
-		HtmlAnchor element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlAnchor.class);
+		HtmlAnchor element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlAnchor.class);
 
 		try
 		{

@@ -1,8 +1,6 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.WebClient;
 import fetchino.util.Util;
-import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 import fetchino.workflow.TempContext;
 
@@ -24,18 +22,18 @@ public class ForEachList extends ForEach
 	}
 
 	@Override
-	public void execute(WebClient webClient, Context context)
+	public void execute(Context context)
 	{
 		if(!context.hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
 		for(String value : context.getList(listName))
 		{
-			TempContext tempContext = new TempContext(context);
+			TempContext tempContext = new TempContext(context, false);
 			tempContext.setTempVariable(var, value);
 
 			for(Action action : actions)
 			{
-				action.execute(webClient, tempContext);
+				action.execute(tempContext);
 			}
 		}
 	}

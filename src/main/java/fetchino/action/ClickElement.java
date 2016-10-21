@@ -1,9 +1,7 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
-import fetchino.workflow.Action;
 import fetchino.workflow.Context;
 
 import java.io.IOException;
@@ -19,9 +17,9 @@ public class ClickElement implements Action
 	}
 
 	@Override
-	public void execute(WebClient webClient, Context context)
+	public void execute(Context context)
 	{
-		HtmlElement element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlElement.class);
+		HtmlElement element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlElement.class);
 		try
 		{
 			element.click();

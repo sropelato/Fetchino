@@ -1,20 +1,15 @@
 package fetchino.util;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import fetchino.workflow.Context;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,9 +52,9 @@ public class Util
 
 	}
 
-	public static HtmlPage getCurrentPage(WebClient webClient)
+	public static HtmlPage getCurrentPage(Context context)
 	{
-		Page page = webClient.getCurrentWindow().getEnclosedPage();
+		Page page = context.getWebClient().getCurrentWindow().getEnclosedPage();
 		if(!page.isHtmlPage())
 			throw new RuntimeException("Not an HtmlPage");
 		return (HtmlPage)page;
@@ -89,5 +84,13 @@ public class Util
 		}
 
 		return result;
+	}
+
+	public static WebClient createWebClient()
+	{
+		WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
+		return webClient;
 	}
 }

@@ -1,5 +1,7 @@
 package fetchino.workflow;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import fetchino.util.Util;
 import fetchino.util.XPathProcessor;
 
 import java.util.HashMap;
@@ -8,14 +10,29 @@ import java.util.Map;
 
 public class TempContext implements Context
 {
+	private final WebClient webClient;
 	private final Context parent;
 	private final Map<String, String> tempVariables = new HashMap<>();
 
-	public TempContext(Context parent)
+	public TempContext(Context parent, boolean createNewWebClient)
 	{
 		this.parent = parent;
+		if(createNewWebClient)
+			webClient = Util.createWebClient();
+		else
+			webClient = null;
 	}
 
+	@Override
+	public WebClient getWebClient()
+	{
+		if(webClient != null)
+			return webClient;
+		else
+			return parent.getWebClient();
+	}
+
+	@Override
 	public XPathProcessor getXPathProcessor()
 	{
 		return parent.getXPathProcessor();
@@ -26,53 +43,62 @@ public class TempContext implements Context
 		tempVariables.put(name, value);
 	}
 
-	public boolean hasVariable(String name)
+	@Override
+	public boolean hasVariable(String variableName)
 	{
-		return tempVariables.containsKey(name) || parent.hasVariable(name);
+		return tempVariables.containsKey(variableName) || parent.hasVariable(variableName);
 	}
 
-	public String getVariable(String name)
+	@Override
+	public String getVariable(String variableName)
 	{
-		if(tempVariables.containsKey(name))
-			return tempVariables.get(name);
+		if(tempVariables.containsKey(variableName))
+			return tempVariables.get(variableName);
 		else
-			return parent.getVariable(name);
+			return parent.getVariable(variableName);
 	}
 
-	public void setVariable(String name, String value)
+	@Override
+	public void setVariable(String variableName, String value)
 	{
-		if(tempVariables.containsKey(name))
-			throw new RuntimeException("Variable '" + name + "' is a temporary variable of this context and cannot be overwritten");
-		parent.setVariable(name, value);
+		if(tempVariables.containsKey(variableName))
+			throw new RuntimeException("Variable '" + variableName + "' is a temporary variable of this context and cannot be overwritten");
+		parent.setVariable(variableName, value);
 	}
 
-	public boolean hasList(String name)
+	@Override
+	public boolean hasList(String listName)
 	{
-		return parent.hasList(name);
+		return parent.hasList(listName);
 	}
 
-	public List<String> getList(String name)
+	@Override
+	public List<String> getList(String listName)
 	{
-		return parent.getList(name);
+		return parent.getList(listName);
 	}
 
-	public void addToList(String name, String value)
+	@Override
+	public void addToList(String listName, String value)
 	{
-		parent.addToList(name, value);
+		parent.addToList(listName, value);
 	}
 
-	public boolean hasMap(String name)
+	@Override
+	public boolean hasMap(String mapName)
 	{
-		return parent.hasMap(name);
+		return parent.hasMap(mapName);
 	}
 
-	public Map<String, String> getMap(String name)
+	@Override
+	public Map<String, String> getMap(String mapName)
 	{
-		return parent.getMap(name);
+		return parent.getMap(mapName);
 	}
 
-	public void addToMap(String name, String key, String value)
+	@Override
+	public void addToMap(String mapName, String key, String value)
 	{
-		parent.addToMap(name, key, value);
+		parent.addToMap(mapName, key, value);
 	}
 }
