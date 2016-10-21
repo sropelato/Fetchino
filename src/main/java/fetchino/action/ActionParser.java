@@ -88,26 +88,20 @@ public class ActionParser
 
 	private static FillForm parseFillForm(Element fillFormElement)
 	{
-		String formPath;
-		String inputName;
+		String path;
 		String value;
 
-		if(!fillFormElement.hasAttributeWithName("formPath"))
-			throw new RuntimeException("FillForm has no formPath attribute");
+		if(!fillFormElement.hasAttributeWithName("path"))
+			throw new RuntimeException("FillForm has no path attribute");
 		else
-			formPath = fillFormElement.getAttribute("formPath");
-
-		if(!fillFormElement.hasAttributeWithName("inputName"))
-			throw new RuntimeException("FillForm has no inputName attribute");
-		else
-			inputName = fillFormElement.getAttribute("inputName");
+			path = fillFormElement.getAttribute("path");
 
 		if(!fillFormElement.hasAttributeWithName("value"))
 			throw new RuntimeException("FillForm has no value attribute");
 		else
 			value = fillFormElement.getAttribute("value");
 
-		return new FillForm(formPath, inputName, value);
+		return new FillForm(path, value);
 	}
 
 	private static ClickElement parseClickElement(Element clickElementElement)

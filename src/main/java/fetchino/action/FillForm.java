@@ -9,24 +9,21 @@ import fetchino.workflow.Context;
 
 public class FillForm implements Action
 {
-	private final String formPath;
-	private final String inputName;
+	private final String path;
 	private final String value;
 
-	public FillForm(String formPath, String inputName, String value)
+	public FillForm(String path, String value)
 	{
-		this.formPath = formPath;
-		this.inputName = inputName;
+		this.path = path;
 		this.value = value;
 
-		Util.validateXPathExpression(formPath);
+		Util.validateXPathExpression(path);
 	}
 
 	@Override
 	public void execute(WebClient webClient, Context context)
 	{
-		HtmlForm form = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), formPath, HtmlForm.class);
-		HtmlInput input = form.getInputByName(inputName);
+		HtmlInput input = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlInput.class);
 		input.setValueAttribute(Util.replacePlaceholders(value, context));
 	}
 }

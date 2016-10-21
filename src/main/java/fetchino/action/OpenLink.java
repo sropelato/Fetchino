@@ -22,10 +22,7 @@ public class OpenLink implements Action
 	@Override
 	public void execute(WebClient webClient, Context context)
 	{
-		HtmlElement element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlElement.class);
-
-		if(!(element instanceof HtmlAnchor))
-			throw new RuntimeException("Not an HtmlAnchor element");
+		HtmlAnchor element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(webClient), path, HtmlAnchor.class);
 
 		try
 		{
