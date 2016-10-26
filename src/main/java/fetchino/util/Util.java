@@ -4,7 +4,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.xpath.XPath;
@@ -17,6 +17,9 @@ public class Util
 {
 	private static final String VARIABLE_NAME_PATTERN = "[A-Za-z_][A-Za-z0-9_]*";
 
+	/**
+	 * Sets the logging level.
+	 */
 	public static void setupLogging()
 	{
 		System.setProperty("fetchino.log.level", "debug");
@@ -25,7 +28,7 @@ public class Util
 	}
 
 	/**
-	 * Validates an XPath expression.
+	 * Validates an XPath expression. If the expression is not a valid XPath expression, a RuntimeException is thrown.
 	 *
 	 * @param expression The expression to be validated
 	 */
@@ -45,6 +48,11 @@ public class Util
 		}
 	}
 
+	/**
+	 * Validates a variable name. If the variable name is invalid, a RuntimeException is thrown. Valid variable names match the following regex pattern: [A-Za-z_][A-Za-z0-9_]*
+	 *
+	 * @param variableName The variable name.
+	 */
 	public static void validateVariableName(String variableName)
 	{
 		if(!variableName.matches("^" + VARIABLE_NAME_PATTERN + "$"))
@@ -52,6 +60,10 @@ public class Util
 
 	}
 
+	/**
+	 * @param context The context.
+	 * @return The current page of this context.
+	 */
 	public static HtmlPage getCurrentPage(Context context)
 	{
 		Page page = context.getWebClient().getCurrentWindow().getEnclosedPage();
@@ -60,6 +72,13 @@ public class Util
 		return (HtmlPage)page;
 	}
 
+	/**
+	 * Replaces variable placeholders in a string. If a variable used in a placeholder does not exist, a RuntimeException is thrown.
+	 *
+	 * @param string  The string to be replaced.
+	 * @param context The context holding the variables to replace the placeholders.
+	 * @return The string with all placeholders replaced.
+	 */
 	public static String replacePlaceholders(String string, Context context)
 	{
 		String result = string;
@@ -86,6 +105,11 @@ public class Util
 		return result;
 	}
 
+	/**
+	 * Creates a new web client.
+	 *
+	 * @return A new {@link WebClient} instance.
+	 */
 	public static WebClient createWebClient()
 	{
 		WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);

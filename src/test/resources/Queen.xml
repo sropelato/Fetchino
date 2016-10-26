@@ -3,7 +3,19 @@
   if-then-else
   check if result from XPath query matches regex pattern and set variable accordingly
 -->
-<dataDescriptor>
+<config>
+	<data>
+		<var name="foundFreddie" type="boolean" />
+		<var name="foundMickey" type="boolean" />
+		<var name="notFoundMickey" type="boolean" />
+		<var name="foundFreddieAndBrian" type="boolean" />
+		<var name="foundFreddieAndMickey" type="boolean" />
+		<var name="foundFreddieOrMickey" type="boolean" />
+		<var name="foundMickeyOrMary" type="boolean" />
+		<var name="foundFreddieOrMickeyOrMary" type="boolean" />
+		<var name="foundFreddieXorMickeyXorMary" type="boolean" />
+		<var name="foundFreddieXorBrianXorMary" type="boolean" />
+	</data>
 	<workflow>
 		<request url="https://en.wikipedia.org/wiki/Queen_(band)" />
 		<if>
@@ -134,4 +146,4 @@
 			</else>
 		</if>
 	</workflow>
-</dataDescriptor>
+</config>

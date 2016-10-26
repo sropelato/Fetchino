@@ -1,17 +1,24 @@
 package fetchino.condition;
 
-import com.gargoylesoftware.htmlunit.html.DomAttr;
-import com.gargoylesoftware.htmlunit.html.DomNode;
-import fetchino.util.Util;
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class And extends Matches
+/**
+ * The {@code And} condition is satisfied iff all of the nested conditions are satisfied.
+ *
+ * @version 1.0-SNAPSHOT
+ */
+public class And implements Condition
 {
 	private final List<Condition> conditions = new ArrayList<>();
 
+	/**
+	 * Constructor.
+	 *
+	 * @param conditions List of nested conditions.
+	 */
 	public And(List<Condition> conditions)
 	{
 		this.conditions.addAll(conditions);
@@ -20,6 +27,9 @@ public class And extends Matches
 			throw new RuntimeException("conditions cannot be empty");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean test(Context context)
 	{

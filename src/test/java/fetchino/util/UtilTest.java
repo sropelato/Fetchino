@@ -1,7 +1,8 @@
 package fetchino.util;
 
-import fetchino.workflow.Context;
-import fetchino.workflow.RootContext;
+import fetchino.context.Context;
+import fetchino.context.RootContext;
+import fetchino.context.TempContext;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,12 +19,21 @@ public class UtilTest
 	@Test
 	public void replacePlaceholders() throws Exception
 	{
-		Context context = new RootContext();
-		context.setVariable("var1", "value1");
-		context.setVariable("var2", "value2");
-		context.setVariable("var3", "value3");
+		RootContext rootContext = new RootContext();
+		TempContext tempContext = new TempContext(rootContext, false);
 
-		String stringWithPlaceholders = "aaa${var1}bbb${var2}ccc${var3}";
-		assertEquals("aaavalue1bbbvalue2cccvalue3", Util.replacePlaceholders(stringWithPlaceholders, context));
+		tempContext.addVariable("var1", RootContext.Type.STRING);
+		tempContext.addVariable("var2", RootContext.Type.INT);
+		tempContext.addVariable("var3", RootContext.Type.FLOAT);
+		tempContext.addVariable("var4", RootContext.Type.BOOLEAN);
+
+		tempContext.setVariable("var1", "value1");
+		tempContext.setVariable("var2", 2);
+		tempContext.setVariable("var3", 3.14159);
+		tempContext.setVariable("var4", true);
+		tempContext.setTempVariable("var5", "temp1");
+
+		String stringWithPlaceholders = "aaa${var1}bbb${var2}ccc${var3}ddd${var4}eee${var5}";
+		assertEquals("aaavalue1bbb2ccc3.14159dddtrueeeetemp1", Util.replacePlaceholders(stringWithPlaceholders, tempContext));
 	}
 }

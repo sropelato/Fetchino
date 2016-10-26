@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-  forEach loop over list
+  forEach loop with limit
   get list of all versions of commons-httpclient in the Maven Central Repository
   for each version, get the list of all JAR files and store them in a list
 -->
-<dataDescriptor>
+<config>
+	<data>
+		<var name="limit" type="int" />
+		<list name="metadataFiles" type="string" />
+	</data>
 	<workflow>
 		<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/" />
-		<forEach path="//pre/a[not(contains(.,'../') or contains(.,'.xml'))]/@href" var="version">
+		<forEach path="//pre/a[not(contains(., '../') or contains(., '.xml'))]/@href" var="version" limit="${limit}">
 			<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/${version}" />
-			<addToList path="//pre/a[contains(.,'.jar')]" list="jarFiles" />
+			<addToList path="//pre/a[text() = 'maven-metadata.xml']" list="metadataFiles" />
 		</forEach>
 	</workflow>
-</dataDescriptor>
+</config>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  forEach loop over list
+  get list of all versions of commons-httpclient in the Maven Central Repository
+  for each version, get the list of all JAR files and store them in a list
+-->
+<config>
+	<data>
+		<list name="jarFiles" type="string" />
+	</data>
+	<workflow>
+		<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/" />
+		<forEach path="//pre/a[not(contains(., '../') or contains(., '.xml'))]/@href" var="version">
+			<request url="http://central.maven.org/maven2/commons-httpclient/commons-httpclient/${version}" />
+			<addToList path="//pre/a[contains(., '.jar')]" list="jarFiles" />
+		</forEach>
+	</workflow>
+</config>

@@ -1,14 +1,24 @@
 package fetchino.condition;
 
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Or extends Matches
+/**
+ * The {@code Or} condition is satisfied iff at least one of the nested conditions are satisfied.
+ *
+ * @version 1.0-SNAPSHOT
+ */
+public class Or implements Condition
 {
 	private final List<Condition> conditions = new ArrayList<>();
 
+	/**
+	 * Constructor.
+	 *
+	 * @param conditions List of nested conditions.
+	 */
 	public Or(List<Condition> conditions)
 	{
 		this.conditions.addAll(conditions);
@@ -17,6 +27,9 @@ public class Or extends Matches
 			throw new RuntimeException("conditions cannot be empty");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean test(Context context)
 	{

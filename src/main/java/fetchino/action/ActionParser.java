@@ -9,8 +9,19 @@ import lightdom.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class to create {@link Action} objects defined by DOM elements.
+ *
+ * @version 1.0-SNAPSHOT
+ */
 public class ActionParser
 {
+	/**
+	 * Parses a DOM element and creates an action.
+	 *
+	 * @param actionElement The DOM element to be parsed.
+	 * @return The {@link Action} object defined by the DOM element.
+	 */
 	public static Action parse(Element actionElement)
 	{
 		switch(actionElement.getName())
@@ -38,6 +49,12 @@ public class ActionParser
 		}
 	}
 
+	/**
+	 * Parses a DOM element representing a {@link Request} action.
+	 *
+	 * @param requestElement The DOM element to be parsed.
+	 * @return The {@link Request} action object defined by the DOM element.
+	 */
 	private static Request parseRequest(Element requestElement)
 	{
 		String url;
@@ -88,6 +105,12 @@ public class ActionParser
 		return new Request(url, method, params);
 	}
 
+	/**
+	 * Parses a DOM element representing a {@link FillForm} action.
+	 *
+	 * @param fillFormElement The DOM element to be parsed.
+	 * @return The {@link FillForm} action object defined by the DOM element.
+	 */
 	private static FillForm parseFillForm(Element fillFormElement)
 	{
 		String path;
@@ -106,6 +129,12 @@ public class ActionParser
 		return new FillForm(path, value);
 	}
 
+	/**
+	 * Parses a DOM element representing a {@link ClickElement} action.
+	 *
+	 * @param clickElementElement The DOM element to be parsed.
+	 * @return The {@link ClickElement} action object defined by the DOM element.
+	 */
 	private static ClickElement parseClickElement(Element clickElementElement)
 	{
 		String path;
@@ -118,6 +147,12 @@ public class ActionParser
 		return new ClickElement(path);
 	}
 
+	/**
+	 * Parses a DOM element representing a {@link SetVariable} action.
+	 *
+	 * @param setVarElement The DOM element to be parsed.
+	 * @return The {@link SetVariable} action object defined by the DOM element.
+	 */
 	private static SetVariable parseSetVar(Element setVarElement)
 	{
 		String variableName;
@@ -145,6 +180,12 @@ public class ActionParser
 			return new SetVariableValue(variableName, value);
 	}
 
+	/**
+	 * Parses a DOM element representing an {@link AddToList} action.
+	 *
+	 * @param addToListElement The DOM element to be parsed.
+	 * @return The {@link AddToList} action object defined by the DOM element.
+	 */
 	private static AddToList parseAddToList(Element addToListElement)
 	{
 		String listName;
@@ -163,6 +204,12 @@ public class ActionParser
 		return new AddToList(listName, path);
 	}
 
+	/**
+	 * Parses a DOM element representing an {@link AddToMap} action.
+	 *
+	 * @param addToMapElement The DOM element to be parsed.
+	 * @return The {@link AddToMap} action object defined by the DOM element.
+	 */
 	private static AddToMap parseAddToMap(Element addToMapElement)
 	{
 		String mapName;
@@ -191,6 +238,12 @@ public class ActionParser
 		return new AddToMap(mapName, keyPath, valuePath);
 	}
 
+	/**
+	 * Parses a DOM element representing an {@link OpenLink} action.
+	 *
+	 * @param openLinkElement The DOM element to be parsed.
+	 * @return The {@link OpenLink} action object defined by the DOM element.
+	 */
 	private static OpenLink parseOpenLink(Element openLinkElement)
 	{
 		String path;
@@ -203,12 +256,19 @@ public class ActionParser
 		return new OpenLink(path);
 	}
 
+	/**
+	 * Parses a DOM element representing a {@link ForEach} action.
+	 *
+	 * @param forEachElement The DOM element to be parsed.
+	 * @return The {@link ForEach} action object defined by the DOM element.
+	 */
 	private static ForEach parseForEach(Element forEachElement)
 	{
 		String path = null;
 		String listName = null;
 		String var;
 		List<Action> nestedActions = new ArrayList<>();
+		String limit;
 
 		if(!forEachElement.hasAttributeWithName("path") && !forEachElement.hasAttributeWithName("list"))
 			throw new RuntimeException("forEach must have either a path or a list attribute");
@@ -225,14 +285,25 @@ public class ActionParser
 		else
 			var = forEachElement.getAttribute("var");
 
+		if(forEachElement.hasAttributeWithName("limit"))
+			limit = forEachElement.getAttribute("limit");
+		else
+			limit = null;
+
 		forEachElement.getElements().forEach(actionElement -> nestedActions.add(parse(actionElement)));
 
 		if(path != null)
-			return new ForEachPath(path, var, nestedActions);
+			return new ForEachPath(path, var, nestedActions, limit);
 		else
-			return new ForEachList(listName, var, nestedActions);
+			return new ForEachList(listName, var, nestedActions, limit);
 	}
 
+	/**
+	 * Parses a DOM element representing an {@link If} action.
+	 *
+	 * @param ifElement The DOM element to be parsed.
+	 * @return The {@link If} action object defined by the DOM element.
+	 */
 	private static If parseIf(Element ifElement)
 	{
 		Condition condition;

@@ -3,16 +3,28 @@ package fetchino.action;
 import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 
 import java.util.List;
 
+/**
+ * The {@code AddToMap} action adds a new entry to a map.
+ *
+ * @version 1.0-SNAPSHOT
+ */
 public class AddToMap implements Action
 {
 	private final String mapName;
 	private final String keyPath;
 	private final String valuePath;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapName   Name of the map
+	 * @param keyPath   XPath expression defining the keys of the map entries.
+	 * @param valuePath XPath expression defining the values of the map entries.
+	 */
 	public AddToMap(String mapName, String keyPath, String valuePath)
 	{
 		this.mapName = mapName;
@@ -24,6 +36,9 @@ public class AddToMap implements Action
 		Util.validateXPathExpression(valuePath);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(Context context)
 	{

@@ -3,11 +3,14 @@
   open Wikipedia main page and search for Google article
   retrieve the names of the founders and store them in a list
 -->
-<dataDescriptor>
+<config>
+	<data>
+		<list name="founders" type="string" />
+	</data>
 	<workflow>
 		<request url="https://en.wikipedia.org/wiki/Main_Page" />
 		<fillForm path="//form[@id='searchform']//input[@id='searchInput']" value="Google" />
 		<clickElement path="//form[@id='searchform']//input[@type='submit' and @name='go']" />
 		<addToList path="//div[@id='mw-content-text']/table[@class='infobox vcard']/tbody/tr/th[contains(., 'Founders')]/following-sibling::td/div/ul/li/a" list="founders" />
 	</workflow>
-</dataDescriptor>
+</config>

@@ -3,7 +3,11 @@
   retrieve title and date of all compositions by Johann Sebastian Bach
   and store them in maps using the BWV index as key
 -->
-<dataDescriptor>
+<config>
+	<data>
+		<map name="compositionNames" keyType="string" valueType="string" />
+		<map name="compositionDates" keyType="string" valueType="string" />
+	</data>
 	<workflow>
 		<request url="https://en.wikipedia.org/wiki/List_of_compositions_by_Johann_Sebastian_Bach" />
 		<addToMap map="compositionNames">
@@ -15,4 +19,4 @@
 			<value path="//table[@class='wikitable sortable']/tbody/tr[not(td[@colspan='8'])]/td[3]" />
 		</addToMap>
 	</workflow>
-</dataDescriptor>
+</config>

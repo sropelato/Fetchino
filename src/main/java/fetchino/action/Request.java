@@ -5,7 +5,7 @@ import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.util.UrlUtils;
 import fetchino.util.Util;
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -13,24 +13,45 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code Request} action performs an HTTP request.
+ *
+ * @version 1.0-SNAPSHOT
+ */
 public class Request implements Action
 {
 	private final String urlString;
 	private final HttpMethod method;
 	private final List<NameValuePair> params = new ArrayList<>();
 
+	/**
+	 * Constructor
+	 *
+	 * @param url    URL of the requested site.
+	 * @param method Method of the HTTP request.
+	 */
 	public Request(String url, HttpMethod method)
 	{
 		this.urlString = url;
 		this.method = method;
 	}
 
+	/**
+	 * Constructor
+	 *
+	 * @param url    URL of the requested site.
+	 * @param method Method of the HTTP request.
+	 * @param params List of parameters added to the request.
+	 */
 	public Request(String url, HttpMethod method, List<NameValuePair> params)
 	{
 		this(url, method);
 		this.params.addAll(params);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(Context context)
 	{

@@ -1,19 +1,29 @@
 package fetchino.condition;
 
-import fetchino.workflow.Context;
+import fetchino.context.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Not extends Matches
+/**
+ * The {@code Not} condition is satisfied iff the nested condition is not satisfied.
+ *
+ * @version 1.0-SNAPSHOT
+ */
+public class Not implements Condition
 {
 	private final Condition condition;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param condition Nested condition.
+	 */
 	public Not(Condition condition)
 	{
 		this.condition = condition;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean test(Context context)
 	{
