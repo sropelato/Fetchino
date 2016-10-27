@@ -35,6 +35,9 @@ public class MatchesVariable extends Matches
 		return context.getVariable(variableName).matches(regex);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

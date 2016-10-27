@@ -42,6 +42,9 @@ public class SetVariablePath extends SetVariable
 		context.setVariable(variableName, (element instanceof DomAttr) ? element.getNodeValue() : element.asText());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

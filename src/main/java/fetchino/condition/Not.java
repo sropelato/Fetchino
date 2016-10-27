@@ -32,6 +32,9 @@ public class Not implements Condition
 		return !condition.test(context);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

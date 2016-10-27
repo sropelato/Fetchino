@@ -33,7 +33,7 @@ public class If implements Action
 		if(elseActions != null)
 			this.elseActions.addAll(elseActions);
 
-		if(thenActions.isEmpty())
+		if(this.thenActions.isEmpty())
 			throw new RuntimeException("then actions cannot be empty");
 	}
 
@@ -50,6 +50,9 @@ public class If implements Action
 			elseActions.forEach(action -> action.execute(context));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

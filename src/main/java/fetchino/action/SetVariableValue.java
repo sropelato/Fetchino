@@ -38,6 +38,9 @@ public class SetVariableValue extends SetVariable
 		context.setVariable(variableName, Util.replacePlaceholders(value, context));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

@@ -40,6 +40,9 @@ public class MatchesPath extends Matches
 		return elementValue.matches(regex);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

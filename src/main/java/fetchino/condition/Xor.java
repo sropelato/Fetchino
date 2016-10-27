@@ -46,6 +46,9 @@ public class Xor implements Condition
 		return positive == 1;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

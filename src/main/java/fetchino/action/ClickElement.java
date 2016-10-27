@@ -45,6 +45,9 @@ public class ClickElement implements Action
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

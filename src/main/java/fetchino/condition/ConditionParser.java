@@ -1,7 +1,5 @@
 package fetchino.condition;
 
-import fetchino.action.Action;
-import fetchino.action.Request;
 import lightdom.Element;
 
 import java.util.ArrayList;

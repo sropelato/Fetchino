@@ -36,6 +36,7 @@ public class TempContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * Returns the {@link WebClient} of this context. If this context does not have a web client of its own, the parent's web client will be returned.
 	 */
 	@Override
 	public WebClient getWebClient()
@@ -48,6 +49,7 @@ public class TempContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * Returns the parent's {@link XPathProcessor}.
 	 */
 	@Override
 	public XPathProcessor getXPathProcessor()
@@ -80,6 +82,7 @@ public class TempContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If a temporary variable with the given name exists, its value will be returned. Otherwise, the variable value of the parent context will be returned.
 	 */
 	@Override
 	public String getVariable(String variableName)
@@ -92,7 +95,9 @@ public class TempContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If a temporary variable with the given name exists, its value will be returned. Otherwise, the variable value of the parent context will be returned.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getVariable(String variableName, Class<T> type)
 	{

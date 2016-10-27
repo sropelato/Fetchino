@@ -1,6 +1,5 @@
 package fetchino.condition;
 
-import fetchino.action.AddToList;
 import fetchino.context.Context;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +43,9 @@ public class And implements Condition
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

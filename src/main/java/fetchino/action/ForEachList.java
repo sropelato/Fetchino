@@ -5,6 +5,7 @@ import fetchino.context.Context;
 import fetchino.context.TempContext;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class ForEachList extends ForEach
 	private final String var;
 	private final List<Action> actions;
 	private final String limit;
+	private final boolean parallel;
 
 	/**
 	 * Constructor.
@@ -28,7 +30,7 @@ public class ForEachList extends ForEach
 	 */
 	public ForEachList(String listName, String var, List<Action> actions)
 	{
-		this(listName, var, actions, null);
+		this(listName, var, actions, null, false);
 	}
 
 	/**
@@ -38,13 +40,15 @@ public class ForEachList extends ForEach
 	 * @param var      Name of the temporary variable containing the list element of the current iteration.
 	 * @param actions  List of actions executed in each iteration.
 	 * @param limit    Mamimum number of iterations to be executed. This may contain variable placeholders. A value of {@code null} or an expression evaluated to a number less than 1 means no limit.
+	 * @param parallel Process actions parallel.
 	 */
-	public ForEachList(String listName, String var, List<Action> actions, String limit)
+	public ForEachList(String listName, String var, List<Action> actions, String limit, boolean parallel)
 	{
 		this.listName = listName;
 		this.var = var;
 		this.actions = actions;
 		this.limit = limit;
+		this.parallel = parallel;
 
 		Util.validateVariableName(var);
 	}
@@ -58,6 +62,7 @@ public class ForEachList extends ForEach
 		LoggerFactory.getLogger(ForEachList.class).debug("Executing action: " + this);
 		if(!context.hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
+		List<Thread> threads = new ArrayList<>();
 
 		int count = 0;
 		for(String value : context.getList(listName))
@@ -65,18 +70,50 @@ public class ForEachList extends ForEach
 			if(limit != null && Integer.parseInt(Util.replacePlaceholders(limit, context)) > 0 && count >= Integer.parseInt(Util.replacePlaceholders(limit, context)))
 				break;
 
-			TempContext tempContext = new TempContext(context, false);
+			final TempContext tempContext = new TempContext(context, false);
 			tempContext.setTempVariable(var, value);
 
-			for(Action action : actions)
+			if(parallel)
 			{
-				action.execute(tempContext);
+				threads.add(new Thread(() ->
+				{
+					for(Action action : actions)
+					{
+						action.execute(tempContext);
+					}
+				}));
+			}
+			else
+			{
+				for(Action action : actions)
+				{
+					action.execute(tempContext);
+				}
 			}
 
 			count++;
 		}
+
+		if(parallel)
+		{
+			threads.forEach(Thread::start);
+			for(Thread thread : threads)
+			{
+				try
+				{
+					thread.join();
+				}
+				catch(InterruptedException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

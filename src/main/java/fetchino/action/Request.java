@@ -9,7 +9,6 @@ import fetchino.context.Context;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,16 +66,15 @@ public class Request implements Action
 			webRequest.setRequestParameters(replacedParams);
 			context.getWebClient().getPage(url);
 		}
-		catch(MalformedURLException e)
-		{
-			throw new RuntimeException(e);
-		}
 		catch(IOException e)
 		{
 			throw new RuntimeException(e);
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

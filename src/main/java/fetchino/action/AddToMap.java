@@ -54,6 +54,9 @@ public class AddToMap implements Action
 			context.addToMap(mapName, (keyElements.get(i) instanceof DomAttr) ? keyElements.get(i).getNodeValue() : keyElements.get(i).asText(), (valueElements.get(i) instanceof DomAttr) ? valueElements.get(i).getNodeValue() : valueElements.get(i).asText());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

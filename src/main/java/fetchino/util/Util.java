@@ -13,13 +13,18 @@ import javax.xml.xpath.XPathFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Helper class with various useful methods.
+ *
+ * @version 1.0-SNAPSHOT
+ */
 public class Util
 {
 	private static final String VARIABLE_NAME_PATTERN = "[A-Za-z_][A-Za-z0-9_]*";
 
 	public enum LogLevel
 	{
-		DEFAULT, DEBUG;
+		DEFAULT, DEBUG
 	}
 
 	/**

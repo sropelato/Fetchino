@@ -1,6 +1,5 @@
 package fetchino.util;
 
-import fetchino.context.Context;
 import fetchino.context.RootContext;
 import fetchino.context.TempContext;
 import org.junit.Before;

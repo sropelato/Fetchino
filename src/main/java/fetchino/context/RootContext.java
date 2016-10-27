@@ -60,7 +60,7 @@ public class RootContext implements Context
 		 * @param cls Type class corresponding to the desired type.
 		 * @return The type corresponding to the given class.
 		 */
-		public static Type fromClass(Class cls)
+		public static Type fromClass(Class<?> cls)
 		{
 			if(cls.isAssignableFrom(String.class))
 				return STRING;
@@ -200,7 +200,7 @@ public class RootContext implements Context
 	 * {@inheritDoc}
 	 */
 	@Override
-	public XPathProcessor getXPathProcessor()
+	public synchronized XPathProcessor getXPathProcessor()
 	{
 		return xPathProcessor;
 	}
@@ -209,16 +209,17 @@ public class RootContext implements Context
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean hasVariable(String variableName)
+	public synchronized boolean hasVariable(String variableName)
 	{
 		return variableTypes.containsKey(variableName);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not exist, a RuntimeException will be thrown.
 	 */
 	@Override
-	public String getVariable(String variableName)
+	public synchronized String getVariable(String variableName)
 	{
 		if(!hasVariable(variableName))
 			throw new RuntimeException("Variable does not exist: " + variableName);
@@ -227,9 +228,11 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not have the correct type, a RuntimeException will be thrown.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getVariable(String variableName, Class<T> type)
+	public synchronized <T> T getVariable(String variableName, Class<T> type)
 	{
 		if(!hasVariable(variableName))
 			throw new RuntimeException("Variable does not exist: " + variableName);
@@ -253,36 +256,40 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not have the type {@link fetchino.context.RootContext.Type#INT}, a RuntimeException will be thrown.
 	 */
 	@Override
-	public int getIntVariable(String variableName)
+	public synchronized int getIntVariable(String variableName)
 	{
 		return getVariable(variableName, Integer.class);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not have the type {@link fetchino.context.RootContext.Type#FLOAT}, a RuntimeException will be thrown.
 	 */
 	@Override
-	public float getFloatVariable(String variableName)
+	public synchronized float getFloatVariable(String variableName)
 	{
 		return getVariable(variableName, Float.class);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not have the type {@link fetchino.context.RootContext.Type#BOOLEAN}, a RuntimeException will be thrown.
 	 */
 	@Override
-	public boolean getBooleanVariable(String variableName)
+	public synchronized boolean getBooleanVariable(String variableName)
 	{
 		return getVariable(variableName, Boolean.class);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not exist or is not of a compatible type, a RuntimeException will be thrown.
 	 */
 	@Override
-	public <T> void setVariable(String variableName, T value)
+	public synchronized <T> void setVariable(String variableName, T value)
 	{
 		if(!hasVariable(variableName))
 			throw new RuntimeException("Variable does not exist: " + variableName);
@@ -298,16 +305,17 @@ public class RootContext implements Context
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean hasList(String listName)
+	public synchronized boolean hasList(String listName)
 	{
 		return listTypes.containsKey(listName);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not exist, a RuntimeException will be thrown.
 	 */
 	@Override
-	public List<String> getList(String listName)
+	public synchronized List<String> getList(String listName)
 	{
 		if(!hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
@@ -316,9 +324,11 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not have the correct type, a RuntimeException will be thrown.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> getList(String listName, Class<T> type)
+	public synchronized <T> List<T> getList(String listName, Class<T> type)
 	{
 		if(!hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
@@ -346,24 +356,27 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not have the type {@link fetchino.context.RootContext.Type#INT}, a RuntimeException will be thrown.
 	 */
 	@Override
-	public List<Integer> getIntList(String listName)
+	public synchronized List<Integer> getIntList(String listName)
 	{
 		return getList(listName, Integer.class);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not have the type {@link fetchino.context.RootContext.Type#FLOAT}, a RuntimeException will be thrown.
 	 */
 	@Override
-	public List<Float> getFloatList(String listName)
+	public synchronized List<Float> getFloatList(String listName)
 	{
 		return getList(listName, Float.class);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not have the type {@link fetchino.context.RootContext.Type#BOOLEAN}, a RuntimeException will be thrown.
 	 */
 	@Override
 	public List<Boolean> getBooleanList(String listName)
@@ -373,9 +386,10 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not exist or is not of a compatible type, a RuntimeException will be thrown.
 	 */
 	@Override
-	public <T> void addToList(String listName, T value)
+	public synchronized <T> void addToList(String listName, T value)
 	{
 		if(!hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
@@ -391,16 +405,17 @@ public class RootContext implements Context
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean hasMap(String mapName)
+	public synchronized boolean hasMap(String mapName)
 	{
 		return mapTypes.containsKey(mapName);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the map does not exist, a RuntimeException will be thrown.
 	 */
 	@Override
-	public Map<String, String> getMap(String mapName)
+	public synchronized Map<String, String> getMap(String mapName)
 	{
 		if(!hasMap(mapName))
 			throw new RuntimeException("Map does not exist: " + mapName);
@@ -409,9 +424,11 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the map does not have the correct key and value types, a RuntimeException will be thrown.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T1, T2> Map<T1, T2> getMap(String mapName, Class<T1> keyType, Class<T2> valueType)
+	public synchronized <T1, T2> Map<T1, T2> getMap(String mapName, Class<T1> keyType, Class<T2> valueType)
 	{
 		if(!hasMap(mapName))
 			throw new RuntimeException("Map does not exist: " + mapName);
@@ -467,9 +484,10 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the map does not exist or is not of a compatible type, a RuntimeException will be thrown.
 	 */
 	@Override
-	public <T1, T2> void addToMap(String mapName, T1 key, T2 value)
+	public synchronized <T1, T2> void addToMap(String mapName, T1 key, T2 value)
 	{
 		if(!hasMap(mapName))
 			throw new RuntimeException("Map does not exist: " + mapName);
@@ -487,6 +505,7 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If a variable with the same name already exists, a RuntimeException will be thrown.
 	 */
 	@Override
 	public void addVariable(String variableName, Type variableType)
@@ -500,15 +519,20 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the variable does not exist, a RuntimeException will be thrown.
 	 */
 	@Override
 	public Type getVariableType(String variableName)
 	{
+		if(!variableTypes.containsKey(variableName))
+			throw new RuntimeException("Variable does not exist: " + variableName);
+
 		return variableTypes.get(variableName);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If a list with the same name already exists, a RuntimeException will be thrown.
 	 */
 	@Override
 	public void addList(String listName, Type listType)
@@ -522,15 +546,19 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the list does not exist, a RuntimeException will be t
 	 */
 	@Override
 	public Type getListType(String listName)
 	{
+		if(!listTypes.containsKey(listName))
+			throw new RuntimeException("List does not exist: " + listName);
 		return listTypes.get(listName);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If a map with the same name already exists, a RuntimeException will be thrown.
 	 */
 	@Override
 	public void addMap(String mapName, Type mapKeyType, Type mapValueType)
@@ -544,19 +572,27 @@ public class RootContext implements Context
 
 	/**
 	 * {@inheritDoc}
+	 * If the map does not exist, a RuntimeException will be t
 	 */
 	@Override
 	public Type getMapKeyType(String mapName)
 	{
+		if(!mapTypes.containsKey(mapName))
+			throw new RuntimeException("Map does not exist: " + mapName);
+
 		return mapTypes.get(mapName).getKey();
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * If the map does not exist, a RuntimeException will be t
 	 */
 	@Override
 	public Type getMapValueType(String mapName)
 	{
+		if(!mapTypes.containsKey(mapName))
+			throw new RuntimeException("Map does not exist: " + mapName);
+
 		return mapTypes.get(mapName).getValue();
 	}
 }

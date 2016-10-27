@@ -85,6 +85,20 @@ public class FetchinoTest
 		assertEquals(3, fetchino.getContext().getList("metadataFiles").size());
 	}
 
+	// multi-threaded forEach loop
+	// get list of all versions of commons-httpclient in the Maven Central Repository
+	// for each version, get the list of all JAR files and store them in a list
+	@Test
+	public void test3d() throws Exception
+	{
+		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("CommonsHttpClientReleases4.xml"));
+		fetchino.fetch();
+
+		assertTrue(fetchino.getContext().getList("jarFiles").contains("commons-httpclient-1.0.jar"));
+		assertTrue(fetchino.getContext().getList("jarFiles").contains("commons-httpclient-2.0.jar"));
+		assertTrue(fetchino.getContext().getList("jarFiles").contains("commons-httpclient-3.0.jar"));
+	}
+
 	// if-then-else
 	// check if result from XPath query matches regex pattern and set variable accordingly
 	@Test

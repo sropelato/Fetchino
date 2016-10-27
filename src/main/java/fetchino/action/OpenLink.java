@@ -46,6 +46,9 @@ public class OpenLink implements Action
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

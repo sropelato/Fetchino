@@ -31,7 +31,7 @@ public interface Context
 	boolean hasVariable(String variableName);
 
 	/**
-	 * TODO: Mention RuntimeException if variable does not exist.
+	 * Returns the string value of the variable.
 	 *
 	 * @param variableName The name of the variable.
 	 * @return The string value of the variable.
@@ -40,7 +40,7 @@ public interface Context
 
 	/**
 	 * Returns the variable value converted to the given type.
-	 * The type {@code T} must match a corresponding {@link fetchino.context.RootContext.Type}. If the variable does not have the correct type, a RuntimeException will be thrown.
+	 * The type {@code T} must match a corresponding {@link fetchino.context.RootContext.Type}.
 	 *
 	 * @param variableName The name of the variable.
 	 * @param type         Class of the return type.
@@ -50,7 +50,7 @@ public interface Context
 	<T> T getVariable(String variableName, Class<T> type);
 
 	/**
-	 * Returns the variable value converted to an integer value. If the variable does not have the type {@link fetchino.context.RootContext.Type#INT}, a RuntimeException will be thrown.
+	 * Returns the variable value converted to an integer value.
 	 *
 	 * @param variableName The name of the variable.
 	 * @return Variable value converted to int.
@@ -58,7 +58,7 @@ public interface Context
 	int getIntVariable(String variableName);
 
 	/**
-	 * Returns the variable value converted to a float value. If the variable does not have the type {@link fetchino.context.RootContext.Type#FLOAT}, a RuntimeException will be thrown.
+	 * Returns the variable value converted to a float value.
 	 *
 	 * @param variableName The name of the variable.
 	 * @return Variable value converted to float.
@@ -66,7 +66,7 @@ public interface Context
 	float getFloatVariable(String variableName);
 
 	/**
-	 * Returns the variable value converted to a boolean value. If the variable does not have the type {@link fetchino.context.RootContext.Type#BOOLEAN}, a RuntimeException will be thrown.
+	 * Returns the variable value converted to a boolean value.
 	 *
 	 * @param variableName The name of the variable.
 	 * @return Variable value converted to boolean.
@@ -74,7 +74,7 @@ public interface Context
 	boolean getBooleanVariable(String variableName);
 
 	/**
-	 * Assigns a value to a variable. The type {@code T} must match the corresponding {@link fetchino.context.RootContext.Type} of the variable. If the variable does not exist or is not of a compatible type, a RuntimeException will be thrown.
+	 * Assigns a value to a variable. The type {@code T} must match the corresponding {@link fetchino.context.RootContext.Type} of the variable.
 	 *
 	 * @param variableName The name of the variable.
 	 * @param value        The value to be assigned.
@@ -96,7 +96,7 @@ public interface Context
 
 	/**
 	 * Returns a list of elements converted to the given type.
-	 * The type {@code T} must match a corresponding {@link fetchino.context.RootContext.Type}. If the list does not have the correct type, a RuntimeException will be thrown.
+	 * The type {@code T} must match a corresponding {@link fetchino.context.RootContext.Type}.
 	 *
 	 * @param listName The name of the list.
 	 * @param type     Class of the return type.
@@ -106,7 +106,7 @@ public interface Context
 	<T> List<T> getList(String listName, Class<T> type);
 
 	/**
-	 * Returns a list of elements converted to integer values. If the list does not have the type {@link fetchino.context.RootContext.Type#INT}, a RuntimeException will be thrown.
+	 * Returns a list of elements converted to integer values.
 	 *
 	 * @param listName The name of the list.
 	 * @return A new list containing the list's elements converted to int.
@@ -114,7 +114,7 @@ public interface Context
 	List<Integer> getIntList(String listName);
 
 	/**
-	 * Returns a list of elements converted to float values. If the list does not have the type {@link fetchino.context.RootContext.Type#FLOAT}, a RuntimeException will be thrown.
+	 * Returns a list of elements converted to float values.
 	 *
 	 * @param listName The name of the list.
 	 * @return A new list containing the list's elements converted to float.
@@ -122,7 +122,7 @@ public interface Context
 	List<Float> getFloatList(String listName);
 
 	/**
-	 * Returns a list of elements converted to boolean values. If the list does not have the type {@link fetchino.context.RootContext.Type#BOOLEAN}, a RuntimeException will be thrown.
+	 * Returns a list of elements converted to boolean values.
 	 *
 	 * @param listName The name of the list.
 	 * @return A new list containing the list's elements converted to boolean.
@@ -130,7 +130,7 @@ public interface Context
 	List<Boolean> getBooleanList(String listName);
 
 	/**
-	 * Adds an element to the list with the given name. The type {@code T} must match the corresponding {@link fetchino.context.RootContext.Type} of the list. If the list does not exist or is not of a compatible type, a RuntimeException will be thrown.
+	 * Adds an element to the list with the given name. The type {@code T} must match the corresponding {@link fetchino.context.RootContext.Type} of the list.
 	 *
 	 * @param listName The name of the list.
 	 * @param value    The value to be added.
@@ -152,7 +152,7 @@ public interface Context
 
 	/**
 	 * Returns a map with entries converted to the given types.
-	 * The types {@code T1} and {@code T2} must match a corresponding {@link fetchino.context.RootContext.Type}. If the map does not have the correct key and value types, a RuntimeException will be thrown.
+	 * The types {@code T1} and {@code T2} must match a corresponding {@link fetchino.context.RootContext.Type}.
 	 *
 	 * @param mapName   The name of the map.
 	 * @param keyType   Class of the key type.
@@ -164,7 +164,7 @@ public interface Context
 	<T1, T2> Map<T1, T2> getMap(String mapName, Class<T1> keyType, Class<T2> valueType);
 
 	/**
-	 * Adds an entry to the map with the given name. The types {@code T1} and {@code T2} must match the corresponding key and value types ({@link fetchino.context.RootContext.Type}) of the map. If the map does not exist or is not of a compatible type, a RuntimeException will be thrown.
+	 * Adds an entry to the map with the given name. The types {@code T1} and {@code T2} must match the corresponding key and value types ({@link fetchino.context.RootContext.Type}) of the map.
 	 *
 	 * @param mapName The name of the list.
 	 * @param key     The key to be added.
@@ -175,7 +175,7 @@ public interface Context
 	<T1, T2> void addToMap(String mapName, T1 key, T2 value);
 
 	/**
-	 * Adds a new variable of a given type to the context and initializes it with a default value. If a variable with the same name already exists, a RuntimeException will be thrown.
+	 * Adds a new variable of a given type to the context and initializes it with a default value.
 	 *
 	 * @param variableName The name of the variable.
 	 * @param variableType The type of the variable.
@@ -190,7 +190,7 @@ public interface Context
 	RootContext.Type getVariableType(String variableName);
 
 	/**
-	 * Adds a new list of a given type to the context. If a list with the same name already exists, a RuntimeException will be thrown.
+	 * Adds a new list of a given type to the context.
 	 *
 	 * @param listName The name of the list.
 	 * @param listType The type of the list.
@@ -204,7 +204,7 @@ public interface Context
 	RootContext.Type getListType(String listName);
 
 	/**
-	 * Adds a new map with a given key and value type to the context. If a map with the same name already exists, a RuntimeException will be thrown.
+	 * Adds a new map with a given key and value type to the context.
 	 *
 	 * @param mapName      The name of the map.
 	 * @param mapKeyType   The key type of the map.

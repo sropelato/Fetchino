@@ -269,6 +269,7 @@ public class ActionParser
 		String var;
 		List<Action> nestedActions = new ArrayList<>();
 		String limit;
+		boolean parallel;
 
 		if(!forEachElement.hasAttributeWithName("path") && !forEachElement.hasAttributeWithName("list"))
 			throw new RuntimeException("forEach must have either a path or a list attribute");
@@ -290,12 +291,14 @@ public class ActionParser
 		else
 			limit = null;
 
+		parallel = forEachElement.hasAttributeWithName("parallel") && forEachElement.getAttributeAsBoolean("parallel");
+
 		forEachElement.getElements().forEach(actionElement -> nestedActions.add(parse(actionElement)));
 
 		if(path != null)
-			return new ForEachPath(path, var, nestedActions, limit);
+			return new ForEachPath(path, var, nestedActions, limit, parallel);
 		else
-			return new ForEachList(listName, var, nestedActions, limit);
+			return new ForEachList(listName, var, nestedActions, limit, parallel);
 	}
 
 	/**

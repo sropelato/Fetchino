@@ -43,6 +43,9 @@ public class Or implements Condition
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

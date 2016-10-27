@@ -2,7 +2,6 @@ package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
-import fetchino.main.Fetchino;
 import fetchino.util.Util;
 import fetchino.context.Context;
 import org.slf4j.LoggerFactory;
@@ -45,6 +44,9 @@ public class AddToList implements Action
 		elements.forEach(element -> context.addToList(listName, (element instanceof DomAttr) ? element.getNodeValue() : element.asText()));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

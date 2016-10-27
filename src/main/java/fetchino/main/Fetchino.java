@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * The {@code Fetchino} class holds a {@link RootContext} and a list of {@link Action}s.
+ *
+ * @version 1.0-SNAPSHOT
  */
 public class Fetchino
 {
