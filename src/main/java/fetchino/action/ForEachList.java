@@ -3,6 +3,7 @@ package fetchino.action;
 import fetchino.util.Util;
 import fetchino.context.Context;
 import fetchino.context.TempContext;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class ForEachList extends ForEach
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(ForEachList.class).debug("Executing action: " + this);
 		if(!context.hasList(listName))
 			throw new RuntimeException("List does not exist: " + listName);
 
@@ -73,5 +75,16 @@ public class ForEachList extends ForEach
 
 			count++;
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ForEachList{" +
+				"listName='" + listName + '\'' +
+				", var='" + var + '\'' +
+				", actions=" + actions +
+				", limit='" + limit + '\'' +
+				'}';
 	}
 }

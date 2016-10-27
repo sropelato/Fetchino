@@ -16,18 +16,9 @@
 			</root>
 		</then>
 		<else>
-			<if condition='property("fetchino.log.level").contains("info")'>
-				<then>
-					<root level="info">
-						<appender-ref ref="STDOUT" />
-					</root>
-				</then>
-				<else>
-					<root level="warn">
-						<appender-ref ref="STDOUT" />
-					</root>
-				</else>
-			</if>
+			<root level="warn">
+				<appender-ref ref="STDOUT" />
+			</root>
 		</else>
 	</if>
 

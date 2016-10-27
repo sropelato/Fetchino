@@ -1,18 +1,18 @@
 package fetchino.util;
 
 import com.gargoylesoftware.htmlunit.html.DomNode;
-import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The {@code XPathProcessor} executes XPath queries on DOM nodes. It maintains a cache of executed queries to process frequent queries more efficiently.
+ * The {@code XPathProcessor} executes XPath queries on DOM nodes.
+ *
+ * @version 1.0-SNAPSHOT
  */
 public class XPathProcessor
 {
-	private Map<Pair<String, String>, Object> resultCache = new HashMap<>();
-	private Set<String> cachedExpressions = new HashSet<>();
-
 	/**
 	 * Retrieves a single element from a {@link DomNode} by a given XPath expression.
 	 * If exactly one object of the expected type is returned, this method returns the cast object.
@@ -26,32 +26,6 @@ public class XPathProcessor
 	 */
 	public <T> T getSingleElementOfType(DomNode node, String expression, Class<T> type)
 	{
-		return getSingleElementOfType(node, expression, type, false);
-	}
-
-	/**
-	 * Retrieves a single element from a {@link DomNode} by a given XPath expression.
-	 * If exactly one object of the expected type is returned, this method returns the cast object.
-	 * An exception is thrown if no object is found, more than one object is found or the object found is not of a subtype of {@code T}.
-	 *
-	 * @param node       DomNode from which the element is retrieved.
-	 * @param expression XPath expression.
-	 * @param type       Class of expected type of returned object.
-	 * @param <T>        Expected type of returned object.
-	 * @param useCache   Use cached result if available.
-	 * @return Retrieved object cast into type {@code T}.
-	 */
-	public <T> T getSingleElementOfType(DomNode node, String expression, Class<T> type, boolean useCache)
-	{
-		// return cached result if available
-		String nodeAsXml = null;
-		if(useCache && cachedExpressions.contains(expression))
-		{
-			nodeAsXml = node.asXml();
-			if(resultCache.containsKey(Pair.of(nodeAsXml, expression)))
-				return (T)resultCache.get(Pair.of(nodeAsXml, expression));
-		}
-
 		List<?> elements = node.getByXPath(expression);
 		if(elements.size() == 0)
 			throw new RuntimeException("No element has been found for expression " + expression);
@@ -60,16 +34,8 @@ public class XPathProcessor
 		else if(!(type.isInstance(elements.get(0))))
 			throw new RuntimeException("Element for expression " + expression + " is not of type " + type.getName());
 
-		if(useCache)
-		{
-			if(nodeAsXml == null)
-				nodeAsXml = node.asXml();
-			cachedExpressions.add(expression);
-			resultCache.put(Pair.of(nodeAsXml, expression), elements.get(0));
-		}
-
+		LoggerFactory.getLogger(XPathProcessor.class).debug("Found 1 element matching XPath expression " + expression);
 		return (T)elements.get(0);
-
 	}
 
 	/**
@@ -85,49 +51,15 @@ public class XPathProcessor
 	 */
 	public <T> List<T> getElementsOfType(DomNode node, String expression, Class<T> type)
 	{
-		return getElementsOfType(node, expression, type, false);
-	}
-
-	/**
-	 * Retrieves elements from a {@link DomNode} by a given XPath expression.
-	 * If all objects are of a type compatible with {@code T}, this method returns a {@code List<T>}.
-	 * An exception is thrown if at least one of the retrieved objects is not of a subtype of {@code T}.
-	 *
-	 * @param node       DomNode from which the elements are retrieved.
-	 * @param expression XPath expression.
-	 * @param type       Class of expected type of returned object.
-	 * @param <T>        Expected type of returned object.
-	 * @param useCache   Use cached result if available.
-	 * @return List of objects cast into type {@code T}.
-	 */
-	public <T> List<T> getElementsOfType(DomNode node, String expression, Class<T> type, boolean useCache)
-	{
-		// return cached result if available
-		String nodeAsXml = null;
-		if(useCache && cachedExpressions.contains(expression))
-		{
-			nodeAsXml = node.asXml();
-			if(resultCache.containsKey(Pair.of(nodeAsXml, expression)))
-				return (List<T>)resultCache.get(Pair.of(nodeAsXml, expression));
-		}
-
-		List<T> result = new ArrayList<T>();
-		List<?> elements = node.getByXPath(expression);
-		elements.forEach(element ->
+		List<T> result = new ArrayList<>();
+		node.getByXPath(expression).forEach(element ->
 		{
 			if(!(type.isInstance(element)))
 				throw new RuntimeException("Elements for expression " + expression + " are not of type " + type.getName());
 			result.add((T)element);
 		});
 
-		if(useCache)
-		{
-			if(nodeAsXml == null)
-				nodeAsXml = node.asXml();
-			cachedExpressions.add(expression);
-			resultCache.put(Pair.of(nodeAsXml, expression), result);
-		}
-
+		LoggerFactory.getLogger(XPathProcessor.class).debug("Found " + result.size() + " " + (result.size() == 1 ? "element" : "elements") + " matching XPath expression " + expression);
 		return result;
 	}
 }

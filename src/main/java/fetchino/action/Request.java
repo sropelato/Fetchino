@@ -6,6 +6,7 @@ import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.util.UrlUtils;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -55,6 +56,7 @@ public class Request implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(Request.class).debug("Executing action: " + this);
 		try
 		{
 			URL url = UrlUtils.toUrlUnsafe(Util.replacePlaceholders(urlString, context));
@@ -73,5 +75,15 @@ public class Request implements Action
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Request{" +
+				"urlString='" + urlString + '\'' +
+				", method=" + method +
+				", params=" + params +
+				'}';
 	}
 }

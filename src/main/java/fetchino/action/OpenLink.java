@@ -3,6 +3,7 @@ package fetchino.action;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -32,6 +33,7 @@ public class OpenLink implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(OpenLink.class).debug("Executing action: " + this);
 		HtmlAnchor element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlAnchor.class);
 
 		try
@@ -42,5 +44,13 @@ public class OpenLink implements Action
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "OpenLink{" +
+				"path='" + path + '\'' +
+				'}';
 	}
 }

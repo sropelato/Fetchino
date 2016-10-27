@@ -1,6 +1,7 @@
 package fetchino.condition;
 
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code Matches} condition is satisfied iff a variable matches a given regex pattern.
@@ -30,6 +31,16 @@ public class MatchesVariable extends Matches
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(MatchesVariable.class).debug("Testing condition: " + this);
 		return context.getVariable(variableName).matches(regex);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "MatchesVariable{" +
+				"variableName='" + variableName + '\'' +
+				", regex='" + regex + '\'' +
+				'}';
 	}
 }

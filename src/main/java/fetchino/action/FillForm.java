@@ -3,6 +3,7 @@ package fetchino.action;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code AddToList} action assigns a value to an input element.
@@ -34,7 +35,17 @@ public class FillForm implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(FillForm.class).debug("Executing action: " + this);
 		HtmlInput input = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlInput.class);
 		input.setValueAttribute(Util.replacePlaceholders(Util.replacePlaceholders(value, context), context));
+	}
+
+	@Override
+	public String toString()
+	{
+		return "FillForm{" +
+				"path='" + path + '\'' +
+				", value='" + value + '\'' +
+				'}';
 	}
 }

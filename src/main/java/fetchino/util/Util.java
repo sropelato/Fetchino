@@ -17,14 +17,25 @@ public class Util
 {
 	private static final String VARIABLE_NAME_PATTERN = "[A-Za-z_][A-Za-z0-9_]*";
 
+	public enum LogLevel
+	{
+		DEFAULT, DEBUG;
+	}
+
 	/**
 	 * Sets the logging level.
 	 */
-	public static void setupLogging()
+	public static void setupLogging(LogLevel logLevel)
 	{
-		System.setProperty("fetchino.log.level", "debug");
-		//System.setProperty("fetchino.log.level", "info");
-		//System.setProperty("fetchino.log.level", "default");
+		switch(logLevel)
+		{
+			case DEFAULT:
+				System.setProperty("fetchino.log.level", "default");
+				break;
+			case DEBUG:
+				System.setProperty("fetchino.log.level", "debug");
+				break;
+		}
 	}
 
 	/**
@@ -42,8 +53,7 @@ public class Util
 		}
 		catch(XPathExpressionException e)
 		{
-			LoggerFactory.getLogger(Util.class).error("The following XPath expression is not valid: " + expression);
-			LoggerFactory.getLogger(Util.class).error("Reason: " + e.getMessage());
+			LoggerFactory.getLogger(Util.class).error("Invalid XPath expression: " + expression);
 			throw new RuntimeException(e);
 		}
 	}

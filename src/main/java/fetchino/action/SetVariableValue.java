@@ -2,6 +2,7 @@ package fetchino.action;
 
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code SetVariableValue} action assigns the given value to a variable.
@@ -10,8 +11,8 @@ import fetchino.context.Context;
  */
 public class SetVariableValue extends SetVariable
 {
-	private final String value;
 	private final String variableName;
+	private final String value;
 
 	/**
 	 * Constructor.
@@ -21,8 +22,8 @@ public class SetVariableValue extends SetVariable
 	 */
 	public SetVariableValue(String variableName, String value)
 	{
-		this.value = value;
 		this.variableName = variableName;
+		this.value = value;
 
 		Util.validateVariableName(variableName);
 	}
@@ -33,6 +34,16 @@ public class SetVariableValue extends SetVariable
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(SetVariableValue.class).debug("Executing action: " + this);
 		context.setVariable(variableName, Util.replacePlaceholders(value, context));
+	}
+
+	@Override
+	public String toString()
+	{
+		return "SetVariableValue{" +
+				"variableName='" + variableName + '\'' +
+				", value='" + value + '\'' +
+				'}';
 	}
 }

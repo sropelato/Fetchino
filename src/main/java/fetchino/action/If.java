@@ -2,6 +2,7 @@ package fetchino.action;
 
 import fetchino.condition.Condition;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,20 @@ public class If implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(If.class).debug("Executing action: " + this);
 		if(condition.test(context))
 			thenActions.forEach(action -> action.execute(context));
 		else
 			elseActions.forEach(action -> action.execute(context));
+	}
+
+	@Override
+	public String toString()
+	{
+		return "If{" +
+				"condition=" + condition +
+				", thenActions=" + thenActions +
+				", elseActions=" + elseActions +
+				'}';
 	}
 }

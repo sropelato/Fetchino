@@ -1,6 +1,7 @@
 package fetchino.condition;
 
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,20 @@ public class Or implements Condition
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(Or.class).debug("Testing condition: " + this);
 		for(Condition condition : conditions)
 		{
 			if(condition.test(context))
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Or{" +
+				"conditions=" + conditions +
+				'}';
 	}
 }

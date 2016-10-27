@@ -1,6 +1,7 @@
 package fetchino.condition;
 
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,23 @@ public class Xor implements Condition
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(Xor.class).debug("Testing condition: " + this);
 		int positive = 0;
 		for(Condition condition : conditions)
+		{
 			if(condition.test(context))
 				positive++;
+			if(positive > 1)
+				return false;
+		}
 		return positive == 1;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Xor{" +
+				"conditions=" + conditions +
+				'}';
 	}
 }

@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
 import fetchino.context.Context;
 import fetchino.context.TempContext;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class ForEachPath extends ForEach
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(ForEachPath.class).debug("Executing action: " + this);
 		List<DomNode> elements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), DomNode.class);
 		int count = 0;
 		for(DomNode element : elements)
@@ -75,5 +77,16 @@ public class ForEachPath extends ForEach
 
 			count++;
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ForEachPath{" +
+				"path='" + path + '\'' +
+				", var='" + var + '\'' +
+				", actions=" + actions +
+				", limit='" + limit + '\'' +
+				'}';
 	}
 }

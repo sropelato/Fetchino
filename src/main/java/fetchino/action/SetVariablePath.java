@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code SetVariable} action assigns a the result of an XPath query to a variable.
@@ -12,8 +13,8 @@ import fetchino.context.Context;
  */
 public class SetVariablePath extends SetVariable
 {
-	private final String path;
 	private final String variableName;
+	private final String path;
 
 	/**
 	 * Constructor.
@@ -36,7 +37,17 @@ public class SetVariablePath extends SetVariable
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(SetVariablePath.class).debug("Executing action: " + this);
 		DomNode element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), DomNode.class);
 		context.setVariable(variableName, (element instanceof DomAttr) ? element.getNodeValue() : element.asText());
+	}
+
+	@Override
+	public String toString()
+	{
+		return "SetVariablePath{" +
+				"variableName='" + variableName + '\'' +
+				", path='" + path + '\'' +
+				'}';
 	}
 }

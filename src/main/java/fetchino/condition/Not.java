@@ -1,6 +1,7 @@
 package fetchino.condition;
 
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code Not} condition is satisfied iff the nested condition is not satisfied.
@@ -27,6 +28,15 @@ public class Not implements Condition
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(Not.class).debug("Testing condition: " + this);
 		return !condition.test(context);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Not{" +
+				"condition=" + condition +
+				'}';
 	}
 }

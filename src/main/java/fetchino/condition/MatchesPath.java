@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@code Matches} condition is satisfied iff the result of an XPath matches a given regex pattern.
@@ -33,8 +34,18 @@ public class MatchesPath extends Matches
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(MatchesPath.class).debug("Testing condition: " + this);
 		DomNode element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), DomNode.class);
 		String elementValue = (element instanceof DomAttr) ? element.getNodeValue() : element.asText();
 		return elementValue.matches(regex);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "MatchesPath{" +
+				"path='" + path + '\'' +
+				", regex='" + regex + '\'' +
+				'}';
 	}
 }

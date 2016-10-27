@@ -2,8 +2,10 @@ package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
+import fetchino.main.Fetchino;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,8 +16,8 @@ import java.util.List;
  */
 public class AddToList implements Action
 {
-	private final String path;
 	private final String listName;
+	private final String path;
 
 	/**
 	 * Constructor.
@@ -38,7 +40,17 @@ public class AddToList implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(AddToList.class).debug("Executing action: " + this);
 		List<DomNode> elements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), DomNode.class);
 		elements.forEach(element -> context.addToList(listName, (element instanceof DomAttr) ? element.getNodeValue() : element.asText()));
+	}
+
+	@Override
+	public String toString()
+	{
+		return "AddToList{" +
+				"listName='" + listName + '\'' +
+				", path='" + path + '\'' +
+				'}';
 	}
 }

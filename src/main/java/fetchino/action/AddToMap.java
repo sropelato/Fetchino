@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.html.DomAttr;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class AddToMap implements Action
 	@Override
 	public void execute(Context context)
 	{
-		List<DomNode> keyElements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(keyPath, context), DomNode.class, true);
+		LoggerFactory.getLogger(AddToMap.class).debug("Executing action: " + this);
+		List<DomNode> keyElements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(keyPath, context), DomNode.class);
 		List<DomNode> valueElements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(valuePath, context), DomNode.class);
 
 		if(keyElements.size() != valueElements.size())
@@ -50,5 +52,15 @@ public class AddToMap implements Action
 
 		for(int i = 0; i < keyElements.size(); i++)
 			context.addToMap(mapName, (keyElements.get(i) instanceof DomAttr) ? keyElements.get(i).getNodeValue() : keyElements.get(i).asText(), (valueElements.get(i) instanceof DomAttr) ? valueElements.get(i).getNodeValue() : valueElements.get(i).asText());
+	}
+
+	@Override
+	public String toString()
+	{
+		return "AddToMap{" +
+				"mapName='" + mapName + '\'' +
+				", keyPath='" + keyPath + '\'' +
+				", valuePath='" + valuePath + '\'' +
+				'}';
 	}
 }

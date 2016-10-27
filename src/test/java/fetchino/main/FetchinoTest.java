@@ -13,7 +13,7 @@ public class FetchinoTest
 	@Before
 	public void setUp() throws Exception
 	{
-		Util.setupLogging();
+		Util.setupLogging(Util.LogLevel.DEBUG);
 	}
 
 	// open Wikipedia main page and search for Google article

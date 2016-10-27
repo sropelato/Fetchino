@@ -3,6 +3,7 @@ package fetchino.action;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import fetchino.util.Util;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -32,6 +33,7 @@ public class ClickElement implements Action
 	@Override
 	public void execute(Context context)
 	{
+		LoggerFactory.getLogger(ClickElement.class).debug("Executing action: " + this);
 		HtmlElement element = context.getXPathProcessor().getSingleElementOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), HtmlElement.class);
 		try
 		{
@@ -41,5 +43,13 @@ public class ClickElement implements Action
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ClickElement{" +
+				"path='" + path + '\'' +
+				'}';
 	}
 }

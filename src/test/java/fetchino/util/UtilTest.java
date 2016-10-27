@@ -13,7 +13,7 @@ public class UtilTest
 	@Before
 	public void setUp() throws Exception
 	{
-		Util.setupLogging();
+		Util.setupLogging(Util.LogLevel.DEBUG);
 	}
 
 	@Test

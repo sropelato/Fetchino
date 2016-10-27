@@ -1,6 +1,8 @@
 package fetchino.condition;
 
+import fetchino.action.AddToList;
 import fetchino.context.Context;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +35,20 @@ public class And implements Condition
 	@Override
 	public boolean test(Context context)
 	{
+		LoggerFactory.getLogger(And.class).debug("Testing condition: " + this);
 		for(Condition condition : conditions)
 		{
 			if(!condition.test(context))
 				return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "And{" +
+				"conditions=" + conditions +
+				'}';
 	}
 }
