@@ -30,6 +30,12 @@ public class ActionParser
 				return parseRequest(actionElement);
 			case "fillForm":
 				return parseFillForm(actionElement);
+			case "selectDropdown":
+				return parseSelectDropdown(actionElement);
+			case "selectCheckbox":
+				return parseSelectCheckbox(actionElement);
+			case "selectRadioButton":
+				return parseSelectRadioButton(actionElement);
 			case "clickElement":
 				return parseClickElement(actionElement);
 			case "setVar":
@@ -127,6 +133,78 @@ public class ActionParser
 			value = fillFormElement.getAttribute("value");
 
 		return new FillForm(path, value);
+	}
+
+	/**
+	 * Parses a DOM element representing a {@link SelectDropdown} action.
+	 *
+	 * @param selectDropdownElement The DOM element to be parsed.
+	 * @return The {@link SelectDropdown} action object defined by the DOM element.
+	 */
+	private static SelectDropdown parseSelectDropdown(Element selectDropdownElement)
+	{
+		String path;
+		String value;
+
+		if(!selectDropdownElement.hasAttributeWithName("path"))
+			throw new RuntimeException("selectDropdown has no path attribute");
+		else
+			path = selectDropdownElement.getAttribute("path");
+
+		if(!selectDropdownElement.hasAttributeWithName("value"))
+			throw new RuntimeException("selectDropdown has no value attribute");
+		else
+			value = selectDropdownElement.getAttribute("value");
+
+		return new SelectDropdown(path, value);
+	}
+
+	/**
+	 * Parses a DOM element representing a {@link SelectCheckbox} action.
+	 *
+	 * @param selectCheckboxElement The DOM element to be parsed.
+	 * @return The {@link SelectCheckbox} action object defined by the DOM element.
+	 */
+	private static SelectCheckbox parseSelectCheckbox(Element selectCheckboxElement)
+	{
+		String path;
+		String checked;
+
+		if(!selectCheckboxElement.hasAttributeWithName("path"))
+			throw new RuntimeException("selectCheckbox has no path attribute");
+		else
+			path = selectCheckboxElement.getAttribute("path");
+
+		if(!selectCheckboxElement.hasAttributeWithName("checked"))
+			throw new RuntimeException("selectCheckbox has no checked attribute");
+		else
+			checked = selectCheckboxElement.getAttribute("checked");
+
+		return new SelectCheckbox(path, checked);
+	}
+
+	/**
+	 * Parses a DOM element representing a {@link SelectRadioButton} action.
+	 *
+	 * @param selectRadioButtonElement The DOM element to be parsed.
+	 * @return The {@link SelectRadioButton} action object defined by the DOM element.
+	 */
+	private static SelectRadioButton parseSelectRadioButton(Element selectRadioButtonElement)
+	{
+		String path;
+		String checked;
+
+		if(!selectRadioButtonElement.hasAttributeWithName("path"))
+			throw new RuntimeException("selectRadioButtonhas no path attribute");
+		else
+			path = selectRadioButtonElement.getAttribute("path");
+
+		if(!selectRadioButtonElement.hasAttributeWithName("checked"))
+			throw new RuntimeException("selectRadioButtonhas has no checked attribute");
+		else
+			checked = selectRadioButtonElement.getAttribute("checked");
+
+		return new SelectRadioButton(path, checked);
 	}
 
 	/**

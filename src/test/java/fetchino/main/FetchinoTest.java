@@ -85,7 +85,7 @@ public class FetchinoTest
 		assertEquals(3, fetchino.getContext().getList("metadataFiles").size());
 	}
 
-	// multi-threaded forEach loop
+	// parallel forEach loop
 	// get list of all versions of commons-httpclient in the Maven Central Repository
 	// for each version, get the list of all JAR files and store them in a list
 	@Test
@@ -137,5 +137,18 @@ public class FetchinoTest
 		assertTrue(fetchino.getContext().getBooleanVariable("foundFreddieOrMickeyOrMary"));
 		assertTrue(fetchino.getContext().getBooleanVariable("foundFreddieXorMickeyXorMary"));
 		assertFalse(fetchino.getContext().getBooleanVariable("foundFreddieXorBrianXorMary"));
+	}
+
+	// test input on HTML page.
+	@Test
+	public void test5() throws Exception
+	{
+		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("InputTest.xml"));
+		fetchino.fetch();
+
+		assertEquals("Option 3", fetchino.getContext().getVariable("option"));
+		assertEquals("checked", fetchino.getContext().getVariable("checkbox1"));
+		assertEquals("unchecked", fetchino.getContext().getVariable("checkbox2"));
+		assertEquals("Selection 2", fetchino.getContext().getVariable("selection"));
 	}
 }
