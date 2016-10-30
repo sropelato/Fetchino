@@ -9,7 +9,6 @@ import fetchino.context.Context;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public class Request implements Action
 {
-	private final String urlString;
+	private final String url;
 	private final HttpMethod method;
 	private final List<NameValuePair> params = new ArrayList<>();
 
@@ -32,7 +31,7 @@ public class Request implements Action
 	 */
 	public Request(String url, HttpMethod method)
 	{
-		this.urlString = url;
+		this.url = url;
 		this.method = method;
 	}
 
@@ -58,13 +57,11 @@ public class Request implements Action
 		LoggerFactory.getLogger(Request.class).debug("Executing action: " + this);
 		try
 		{
-			URL url = UrlUtils.toUrlUnsafe(Util.replacePlaceholders(urlString, context));
-
-			WebRequest webRequest = new WebRequest(url, method);
+			WebRequest webRequest = new WebRequest(UrlUtils.toUrlUnsafe(Util.replacePlaceholders(url, context)), method);
 			List<NameValuePair> replacedParams = new ArrayList<>();
 			params.forEach(param -> replacedParams.add(new NameValuePair(param.getName(), param.getValue())));
 			webRequest.setRequestParameters(replacedParams);
-			context.getWebClient().getPage(url);
+			context.getWebClient().getPage(webRequest);
 		}
 		catch(IOException e)
 		{
@@ -79,7 +76,7 @@ public class Request implements Action
 	public String toString()
 	{
 		return "Request{" +
-				"urlString='" + urlString + '\'' +
+				"url='" + url + '\'' +
 				", method=" + method +
 				", params=" + params +
 				'}';

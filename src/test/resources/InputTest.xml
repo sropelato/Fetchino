@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-  test input on HTML page.
+  test input on HTML page
 -->
 <config>
 	<data>
+		<var name="text" type="string" />
 		<var name="option" type="string" />
-		<var name="checkbox1" type="string" />
-		<var name="checkbox2" type="string" />
+		<var name="checkbox1" type="boolean" />
+		<var name="checkbox2" type="boolean" />
 		<var name="selection" type="string" />
 	</data>
 	<workflow>
 		<request url="http://newtonweb.dyndns.org/webcrawlertests/test_input.php" />
+		<fillForm path="//input[@type='text' and @name='text']" value="Hello World" />
 		<selectDropdown path="//select[@name='option']" value="Option 3" />
 		<selectCheckbox path="//input[@type='checkbox' and @name='checkbox1']" checked="true" />
 		<selectCheckbox path="//input[@type='checkbox' and @name='checkbox2']" checked="false" />
 		<selectRadioButton path="//input[@type='radio' and @name='selection' and @value='Selection 2']" checked="true" />
 		<clickElement path="//input[@type='submit' and @name='submit']" />
+		<setVar var="text" path="//body/p/span[@id='text']" />
 		<setVar var="option" path="//body/p/span[@id='option']" />
-		<setVar var="checkbox1" path="//body/p/span[@id='checkbox1']" />
-		<setVar var="checkbox2" path="//body/p/span[@id='checkbox2']" />
 		<setVar var="selection" path="//body/p/span[@id='selection']" />
+		<if>
+			<condition>
+				<matches path="//body/p/span[@id='checkbox1']" regex="checked" />
+			</condition>
+			<then>
+				<setVar var="checkbox1" value="true" />
+			</then>
+		</if>
+		<if>
+			<condition>
+				<matches path="//body/p/span[@id='checkbox2']" regex="checked" />
+			</condition>
+			<then>
+				<setVar var="checkbox2" value="true" />
+			</then>
+		</if>
 	</workflow>
 </config>

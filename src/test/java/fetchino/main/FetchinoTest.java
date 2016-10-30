@@ -150,16 +150,17 @@ public class FetchinoTest
 		assertFalse(fetchino.getContext().getBooleanVariable("foundFreddieXorBrianXorMary"));
 	}
 
-	// test input on HTML page.
+	// test input on HTML page
 	@Test
 	public void test5() throws Exception
 	{
 		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("InputTest.xml"));
 		fetchino.fetch();
 
+		assertEquals("Hello World", fetchino.getContext().getVariable("text"));
 		assertEquals("Option 3", fetchino.getContext().getVariable("option"));
-		assertEquals("checked", fetchino.getContext().getVariable("checkbox1"));
-		assertEquals("unchecked", fetchino.getContext().getVariable("checkbox2"));
+		assertTrue(fetchino.getContext().getBooleanVariable("checkbox1"));
+		assertFalse(fetchino.getContext().getBooleanVariable("checkbox2"));
 		assertEquals("Selection 2", fetchino.getContext().getVariable("selection"));
 	}
 }

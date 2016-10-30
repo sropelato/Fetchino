@@ -1,7 +1,6 @@
 package fetchino.action;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import fetchino.context.Context;

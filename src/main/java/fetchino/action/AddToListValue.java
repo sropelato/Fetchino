@@ -1,12 +1,8 @@
 package fetchino.action;
 
-import com.gargoylesoftware.htmlunit.html.DomAttr;
-import com.gargoylesoftware.htmlunit.html.DomNode;
 import fetchino.context.Context;
 import fetchino.util.Util;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * The {@code AddToListValue} action adds a new element to a list.

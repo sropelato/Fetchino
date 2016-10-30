@@ -50,6 +50,8 @@ public class ActionParser
 				return parseForEach(actionElement);
 			case "if":
 				return parseIf(actionElement);
+			case "sleep":
+				return parseSleep(actionElement);
 			default:
 				throw new RuntimeException("Unknown action: " + actionElement.getName());
 		}
@@ -421,5 +423,17 @@ public class ActionParser
 			ifElement.getElementByName("else").getElements().forEach(actionElement -> elseActions.add(parse(actionElement)));
 
 		return new If(condition, thenActions, elseActions);
+	}
+
+	private static Sleep parseSleep(Element sleepElement)
+	{
+		String millis;
+
+		if(!sleepElement.hasAttributeWithName("millis"))
+			throw new RuntimeException("sleep has no millis attribute");
+		else
+			millis = sleepElement.getAttribute("millis");
+
+		return new Sleep(millis);
 	}
 }
