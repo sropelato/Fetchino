@@ -19,9 +19,20 @@ public class FetchinoTest
 	// open Wikipedia main page and search for Google article
 	// retrieve the names of the founders and store them in a list
 	@Test
-	public void test1() throws Exception
+	public void test1a() throws Exception
 	{
 		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("GoogleFounders.xml"));
+		fetchino.fetch();
+
+		assertTrue(fetchino.getContext().getList("founders").containsAll(Arrays.asList("Larry Page", "Sergey Brin")));
+	}
+
+	// open Wikipedia main page and search for Google article
+	// loop over the names of the founders and add them to a list
+	@Test
+	public void test1b() throws Exception
+	{
+		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("GoogleFounders2.xml"));
 		fetchino.fetch();
 
 		assertTrue(fetchino.getContext().getList("founders").containsAll(Arrays.asList("Larry Page", "Sergey Brin")));

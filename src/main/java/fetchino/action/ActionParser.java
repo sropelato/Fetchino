@@ -267,19 +267,28 @@ public class ActionParser
 	private static AddToList parseAddToList(Element addToListElement)
 	{
 		String listName;
-		String path;
+		String path = null;
+		String value = null;
 
 		if(!addToListElement.hasAttributeWithName("list"))
 			throw new RuntimeException("addToList has no list attribute");
 		else
 			listName = addToListElement.getAttribute("list");
 
-		if(!addToListElement.hasAttributeWithName("path"))
-			throw new RuntimeException("addToList has no path attribute");
-		else
-			path = addToListElement.getAttribute("path");
+		if(!addToListElement.hasAttributeWithName("path") && !addToListElement.hasAttributeWithName("value"))
+			throw new RuntimeException("addToList must have either a path or a value attribute");
+		else if(addToListElement.hasAttributeWithName("path") && addToListElement.hasAttributeWithName("value"))
+			throw new RuntimeException("addToList cannot have a path and a value attribute");
 
-		return new AddToList(listName, path);
+		if(addToListElement.hasAttributeWithName("path"))
+			path = addToListElement.getAttribute("path");
+		else
+			value = addToListElement.getAttribute("value");
+
+		if(path != null)
+			return new AddToListPath(listName, path);
+		else
+			return new AddToListValue(listName, value);
 	}
 
 	/**
