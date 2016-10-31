@@ -1,6 +1,8 @@
+# Fetchino
+
 [![Build Status](https://travis-ci.org/barkbeetle/Fetchino.svg?branch=master)](https://travis-ci.org/barkbeetle/Fetchino)
 
-Fetchino is a lightweight web scraper, helping you get structured information from websites. It uses configuration files to describe how the data you're looking for is retrieved and makes it super-easy access the data in an API-like way.
+Fetchino is a lightweight web scraper, helping you get structured information from websites. It uses configuration files to describe how the data you're looking for can be retrieved and makes it super easy to access the data in an API-like way.
 
 ### Example: Who played in the first Lord of the Rings movie?
 
@@ -19,7 +21,7 @@ The following configuration will tell Fetchino to open the imdb.com page for "Th
         </workflow>
     </config>
 
-The names of the actors are stored in a list named "actors" which can be accessed as shown below:
+The names of the actors are stored in a list "actors" which can be accessed as shown below:
 
 ##### Java Code
 
