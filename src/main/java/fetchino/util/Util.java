@@ -81,7 +81,7 @@ public class Util
 	 */
 	public static HtmlPage getCurrentPage(Context context)
 	{
-		Page page = context.getWebClient().getCurrentWindow().getEnclosedPage();
+		Page page = context.getWebClient().getWebWindows().get(0).getEnclosedPage();
 		if(!page.isHtmlPage())
 			throw new RuntimeException("Not an HtmlPage");
 		return (HtmlPage)page;

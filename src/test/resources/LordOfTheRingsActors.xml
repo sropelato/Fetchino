@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  retrieve title and date of all compositions by Johann Sebastian Bach
+  and store them in maps using the BWV index as key
+-->
+<config>
+	<data>
+		<list name="actors" type="string" />
+	</data>
+	<workflow>
+		<request url="http://www.imdb.com/title/tt0120737/fullcredits" />
+		<addToList list="actors" path="//table[@class='cast_list']/tbody/tr[@class]/td[2]/a" />
+	</workflow>
+</config>

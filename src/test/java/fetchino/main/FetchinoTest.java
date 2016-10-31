@@ -163,4 +163,14 @@ public class FetchinoTest
 		assertFalse(fetchino.getContext().getBooleanVariable("checkbox2"));
 		assertEquals("Selection 2", fetchino.getContext().getVariable("selection"));
 	}
+
+	// retrieve the names of all actors who played in The Lord of the Rings: The Fellowship of the Ring
+	@Test
+	public void test6() throws Exception
+	{
+		Fetchino fetchino = Fetchino.fromConfig(this.getClass().getClassLoader().getResourceAsStream("LordOfTheRingsActors.xml"));
+		fetchino.fetch();
+
+		assertTrue(fetchino.getContext().getList("actors").containsAll(Arrays.asList("Elijah Wood", "Ian McKellen", "Orlando Bloom")));
+	}
 }
