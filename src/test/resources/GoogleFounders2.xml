@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   open Wikipedia main page and search for Google article
   loop over the names of the founders and add them to a list

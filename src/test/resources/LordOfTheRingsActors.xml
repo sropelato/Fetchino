@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  retrieve title and date of all compositions by Johann Sebastian Bach
-  and store them in maps using the BWV index as key
+  retrieve the names of all actors who played in The Lord of the Rings: The Fellowship of the Ring
 -->
 <config>
 	<data>

@@ -10,7 +10,7 @@ The following configuration will tell Fetchino to open the imdb.com page for "Th
 
 ##### Config
 
-    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <?xml version="1.0" encoding="UTF-8"?>
     <config>
         <data>
             <list name="actors" type="string" />
