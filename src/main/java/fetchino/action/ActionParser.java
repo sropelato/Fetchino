@@ -68,6 +68,7 @@ public class ActionParser
 		String url;
 		HttpMethod method;
 		List<NameValuePair> params = new ArrayList<>();
+		NameValuePair credentials;
 
 		// url
 		if(!requestElement.hasAttributeWithName("url"))
@@ -110,7 +111,20 @@ public class ActionParser
 			}
 		}
 
-		return new Request(url, method, params);
+		// credentials
+		if(requestElement.hasElementWithName("credentials"))
+		{
+			Element credentialsElement = requestElement.getElementByName("credentials");
+			if(!credentialsElement.hasAttributeWithName("username"))
+				throw new RuntimeException("credentials has no username attribute");
+			if(!credentialsElement.hasAttributeWithName("password"))
+				throw new RuntimeException("credentials has no password attribute");
+			credentials = new NameValuePair(credentialsElement.getAttribute("username"), credentialsElement.getAttribute("password"));
+		}
+		else
+			credentials = null;
+
+		return new Request(url, method, params, credentials);
 	}
 
 	/**

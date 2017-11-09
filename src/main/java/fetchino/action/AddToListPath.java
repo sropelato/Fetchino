@@ -41,7 +41,7 @@ public class AddToListPath extends AddToList
 	{
 		LoggerFactory.getLogger(AddToListPath.class).debug("Executing action: " + this);
 		List<DomNode> elements = context.getXPathProcessor().getElementsOfType(Util.getCurrentPage(context), Util.replacePlaceholders(path, context), DomNode.class);
-		elements.forEach(element -> context.addToList(listName, (element instanceof DomAttr) ? element.getNodeValue() : element.asText()));
+		elements.forEach(element -> context.addToList(listName, (element instanceof DomAttr) ? element.getNodeValue().trim() : element.asText().trim()));
 	}
 
 	/**
