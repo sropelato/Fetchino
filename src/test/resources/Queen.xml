@@ -20,7 +20,7 @@
 		<request url="https://en.wikipedia.org/wiki/Queen_(band)" />
 		<if>
 			<condition>
-				<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
+				<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
 			</condition>
 			<then>
 				<setVar var="foundFreddie" value="true" />
@@ -31,7 +31,7 @@
 		</if>
 		<if>
 			<condition>
-				<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+				<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
 			</condition>
 			<then>
 				<setVar var="foundMickey" value="true" />
@@ -43,7 +43,7 @@
 		<if>
 			<condition>
 				<not>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
 				</not>
 			</condition>
 			<then>
@@ -53,8 +53,8 @@
 		<if>
 			<condition>
 				<and>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Brian May).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Brian May).*" />
 				</and>
 			</condition>
 			<then>
@@ -64,8 +64,8 @@
 		<if>
 			<condition>
 				<and>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
 				</and>
 			</condition>
 			<then>
@@ -78,8 +78,8 @@
 		<if>
 			<condition>
 				<or>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
 				</or>
 			</condition>
 			<then>
@@ -89,8 +89,8 @@
 		<if>
 			<condition>
 				<or>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mary Poppins).*" />
 				</or>
 			</condition>
 			<then>
@@ -103,9 +103,9 @@
 		<if>
 			<condition>
 				<or>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mary Poppins).*" />
 				</or>
 			</condition>
 			<then>
@@ -118,9 +118,9 @@
 		<if>
 			<condition>
 				<xor>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mickey Mouse).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mickey Mouse).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mary Poppins).*" />
 				</xor>
 			</condition>
 			<then>
@@ -133,9 +133,9 @@
 		<if>
 			<condition>
 				<xor>
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Freddie Mercury).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Brian May).*" />
-					<matches path="//div[@id='mw-content-text']/p[1]" regex=".*(Mary Poppins).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Freddie Mercury).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Brian May).*" />
+					<matches path="//div[@id='mw-content-text']" regex="(?s).*(Mary Poppins).*" />
 				</xor>
 			</condition>
 			<then>

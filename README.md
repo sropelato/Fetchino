@@ -1,6 +1,6 @@
 # Fetchino
 
-[![Build Status](https://travis-ci.org/barkbeetle/Fetchino.svg?branch=master)](https://travis-ci.org/barkbeetle/Fetchino)
+[![Build Status](https://travis-ci.org/sropelato/Fetchino.svg?branch=master)](https://travis-ci.org/sropelato/Fetchino)
 
 Fetchino is a lightweight web scraper, helping you get structured information from websites. It uses configuration files to describe how the data you're looking for can be retrieved and makes it super easy to access the data in an API-like way.
 

@@ -40,9 +40,10 @@ public class Request implements Action
 	/**
 	 * Constructor
 	 *
-	 * @param url    URL of the requested site.
-	 * @param method Method of the HTTP request.
-	 * @param params List of parameters added to the request.
+	 * @param url         URL of the requested site.
+	 * @param method      Method of the HTTP request.
+	 * @param params      List of parameters added to the request.
+	 * @param credentials NameValuePair with username and password.
 	 */
 	public Request(String url, HttpMethod method, List<NameValuePair> params, NameValuePair credentials)
 	{

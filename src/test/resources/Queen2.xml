@@ -19,10 +19,10 @@
 	</data>
 	<workflow>
 		<request url="https://en.wikipedia.org/wiki/Queen_(band)" />
-		<setVar var="description" path="//div[@id='mw-content-text']/p[1]" />
+		<setVar var="description" path="//div[@id='mw-content-text']" />
 		<if>
 			<condition>
-				<matches var="description" regex=".*(Freddie Mercury).*" />
+				<matches var="description" regex="(?s).*(Freddie Mercury).*" />
 			</condition>
 			<then>
 				<setVar var="foundFreddie" value="true" />
@@ -33,7 +33,7 @@
 		</if>
 		<if>
 			<condition>
-				<matches var="description" regex=".*(Mickey Mouse).*" />
+				<matches var="description" regex="(?s).*(Mickey Mouse).*" />
 			</condition>
 			<then>
 				<setVar var="foundMickey" value="true" />
@@ -45,7 +45,7 @@
 		<if>
 			<condition>
 				<not>
-					<matches var="description" regex=".*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
 				</not>
 			</condition>
 			<then>
@@ -55,8 +55,8 @@
 		<if>
 			<condition>
 				<and>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Brian May).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Brian May).*" />
 				</and>
 			</condition>
 			<then>
@@ -66,8 +66,8 @@
 		<if>
 			<condition>
 				<and>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
 				</and>
 			</condition>
 			<then>
@@ -80,8 +80,8 @@
 		<if>
 			<condition>
 				<or>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
 				</or>
 			</condition>
 			<then>
@@ -91,8 +91,8 @@
 		<if>
 			<condition>
 				<or>
-					<matches var="description" regex=".*(Mickey Mouse).*" />
-					<matches var="description" regex=".*(Mary Poppins).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Mary Poppins).*" />
 				</or>
 			</condition>
 			<then>
@@ -105,9 +105,9 @@
 		<if>
 			<condition>
 				<or>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Mickey Mouse).*" />
-					<matches var="description" regex=".*(Mary Poppins).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Mary Poppins).*" />
 				</or>
 			</condition>
 			<then>
@@ -120,9 +120,9 @@
 		<if>
 			<condition>
 				<xor>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Mickey Mouse).*" />
-					<matches var="description" regex=".*(Mary Poppins).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Mickey Mouse).*" />
+					<matches var="description" regex="(?s).*(Mary Poppins).*" />
 				</xor>
 			</condition>
 			<then>
@@ -135,9 +135,9 @@
 		<if>
 			<condition>
 				<xor>
-					<matches var="description" regex=".*(Freddie Mercury).*" />
-					<matches var="description" regex=".*(Brian May).*" />
-					<matches var="description" regex=".*(Mary Poppins).*" />
+					<matches var="description" regex="(?s).*(Freddie Mercury).*" />
+					<matches var="description" regex="(?s).*(Brian May).*" />
+					<matches var="description" regex="(?s).*(Mary Poppins).*" />
 				</xor>
 			</condition>
 			<then>
